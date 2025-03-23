@@ -8,6 +8,10 @@ namespace EmployeeManagementSystem
 {
     public  class Company
     {
-        public static List<Department> Departments { get; set; }   
+        public static List<Department> Departments { get; set; }
+        public Company()
+        {
+            
+        }
     }
 }
