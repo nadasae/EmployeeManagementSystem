@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -69,7 +70,7 @@ namespace EmployeeManagementSystem
             return Department;
 
         }
-        public void Setjobtitle(string positionLevel)
+        public void SetPositionLevel(string positionLevel)
         {
             PositionLevel = (PositionLevel)Enum.Parse(typeof(PositionLevel), positionLevel, true);
         }
@@ -86,6 +87,22 @@ namespace EmployeeManagementSystem
         public void GetEmploymentDate()
         {
             Console.WriteLine($"{EmploymentDate.ToShortDateString()}");
+        }
+
+        public  void TrasnferDepartment(string NewDepartment )
+        {
+           
+            if (GetDepartment().Name == NewDepartment)
+                throw new Exception("You'r already in this department");
+            var department = Company.Departments.FirstOrDefault(d => d.Name == NewDepartment);
+
+            if (department == null)
+            {
+                department = new Department(NewDepartment);
+                Company.Departments.Add(department); 
+            }
+            SetDepartment(department) ;
+
         }
 
     }

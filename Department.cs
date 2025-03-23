@@ -12,8 +12,9 @@ namespace EmployeeManagementSystem
         public string Name { get; set; }
         public Employee DepartmentHead { get; set; }
         public List<Employee> Employees { get; set; }
-        public Department()
+        public Department(string Name)
         {
+            this.Name = Name;
             Employees = new List<Employee>();
         }
         public static void AddEmployee(Employee employee)
