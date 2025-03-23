@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagementSystem
 {
-    internal class Company
-    { 
+    public  class Company
+    {
+        public static List<Department> Departments { get; set; }   
     }
 }
