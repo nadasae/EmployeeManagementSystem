@@ -27,8 +27,6 @@ namespace EmployeeManagementSystem
             Department = department;
             PositionLevel = (PositionLevel)Enum.Parse(typeof(PositionLevel), positionLevel, true);
             EmploymentDate = employmentDate;
-
-
         }
         public int GetId()
         {

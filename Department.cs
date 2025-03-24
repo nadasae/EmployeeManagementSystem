@@ -17,15 +17,16 @@ namespace EmployeeManagementSystem
             this.Name = Name;
             Employees = new List<Employee>();
         }
-        public static void AddEmployee(Employee employee)
+        public  void AddEmployee(Employee employee)
         {
-            var department = Company.Departments.FirstOrDefault(d => d.Name == employee.GetDepartment().Name);
+            var department = Departments.FirstOrDefault(d => d.Name == employee.GetDepartment().Name);
             if (department == null) throw new Exception("Department is null ");
             else
             {
                 if (employee == null) throw new ArgumentNullException("employee not exist");
 
                 department.Employees.Add(employee);
+
             }
 
         }
@@ -41,6 +42,11 @@ namespace EmployeeManagementSystem
             
 
         }
+        // remove static keywords 
+        // class  Implementing Performance Management
+        //Add performance ratings for employees.
+        //Create a PerformanceReview class.
+        //Implement logic to promote employees based on ratings.
 
         #region Trash
         //private static int id = 1;
