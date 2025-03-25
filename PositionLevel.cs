@@ -14,4 +14,13 @@ namespace EmployeeManagementSystem
         teamleader,
         head
     }
+    public enum EmployeeRating
+    {
+        Poor,
+        Average,
+        Good,
+        Excellent
+
+    }
+
 }

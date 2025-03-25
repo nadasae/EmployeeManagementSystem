@@ -1,4 +1,6 @@
-﻿namespace EmployeeManagementSystem
+﻿using static System.Runtime.InteropServices.JavaScript.JSType;
+
+namespace EmployeeManagementSystem
 {
 
 
@@ -32,9 +34,9 @@
                     //case "3":
                     //    TransferEmployee();
                     //    break;
-                    //case "4":
-                    //    PromoteEmployee();
-                    //    break;
+                     case "4":
+                        PromoteEmployee();
+                         break;
                     case "5":
                         company.GenerateReport();
                         break;
@@ -102,58 +104,18 @@
                 Console.WriteLine($"Error: {ex.Message}");
             }
         }
-
-        //static void TransferEmployee()
-        //{
-        //    try
-        //    {
-        //        Console.Write("Enter Employee ID: ");
-        //        int id = int.Parse(Console.ReadLine());
-        //        Console.Write("Enter New Department: ");
-        //        string newDept = Console.ReadLine();
-
-        //        Employee emp = company.GetEmployeeById(id);
-        //        if (emp != null)
-        //        {
-        //            emp.TransferDepartment(newDept);
-        //            Console.WriteLine("Employee transferred successfully!");
-        //        }
-        //        else
-        //        {
-        //            Console.WriteLine("Employee not found!");
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine($"Error: {ex.Message}");
-        //    }
-        //}
-
-        //static void PromoteEmployee()
-        //{
-        //    try
-        //    {
-        //        Console.Write("Enter Employee ID: ");
-        //        int id = int.Parse(Console.ReadLine());
-        //        Console.Write("Enter Promotion Amount: ");
-        //        decimal amount = decimal.Parse(Console.ReadLine());
-
-        //        Employee emp = company.GetEmployeeById(id);
-        //        if (emp != null)
-        //        {
-        //            emp.Promote(amount);
-        //            Console.WriteLine("Employee promoted successfully!");
-        //        }
-        //        else
-        //        {
-        //            Console.WriteLine("Employee not found!");
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine($"Error: {ex.Message}");
-        //    }
-        //}
-    }
-
+        
+        static void PromoteEmployee()
+        {
+            int Id;
+            if (int.TryParse(Console.ReadLine(), out Id))
+            {
+                company.Promote(Id);
+            }
+            else
+            {
+                Console.WriteLine("Invalid number!");
+            }
+            
+        }
 }

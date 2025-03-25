@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagementSystem
 {
-     public class Employee
+    public class Employee
     {
         private int Id;
         private string Name;
@@ -17,8 +17,14 @@ namespace EmployeeManagementSystem
         private DateTime EmploymentDate;
         private static int counter = 0;
         private PositionLevel PositionLevel;
+        private bool Statues;
+        public EmployeeRating Rating;
 
-        public Employee(string name, int age, decimal salary, Department department, string positionLevel, DateTime employmentDate)
+        public Employee()
+        {
+            
+        }
+        public Employee(string name, int age, decimal salary, Department department, string positionLevel)
         {
             Id = ++counter;
             Name = name;
@@ -26,7 +32,9 @@ namespace EmployeeManagementSystem
             Salary = salary;
             Department = department;
             PositionLevel = (PositionLevel)Enum.Parse(typeof(PositionLevel), positionLevel, true);
-            EmploymentDate = employmentDate;
+            EmploymentDate = DateTime.Now;
+            Statues = true;
+            Rating = EmployeeRating.Average;
         }
         public int GetId()
         {
@@ -76,20 +84,29 @@ namespace EmployeeManagementSystem
         {
             return PositionLevel;
         }
-        public void SetEmploymentDate(int year, int month, int day)
-        {
-
-            EmploymentDate = new DateTime(year, month, day);
-
-        }
+        
         public void GetEmploymentDate()
         {
             Console.WriteLine($"{EmploymentDate.ToShortDateString()}");
         }
-
-        public  void TrasnferDepartment(string NewDepartment )
+        public void SetEmployeeTerminate()
         {
-           
+            Statues = false;
+        }
+        public bool IsEmployeeTerminate()
+        {
+            return Statues;
+        }
+        public void Promote()
+        {
+            
+                PositionLevel++;
+        }
+
+
+        public void TrasnferDepartment(string NewDepartment)
+        {
+
             if (GetDepartment().Name == NewDepartment)
                 throw new Exception("You'r already in this department");
             var department = Company.Departments.FirstOrDefault(d => d.Name == NewDepartment);
@@ -97,11 +114,9 @@ namespace EmployeeManagementSystem
             if (department == null)
             {
                 department = new Department(NewDepartment);
-                Company.Departments.Add(department); 
+                Company.Departments.Add(department);
             }
-            SetDepartment(department) ;
+            SetDepartment(department);
 
         }
-
     }
-}
