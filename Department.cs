@@ -15,32 +15,17 @@ namespace EmployeeManagementSystem
         public Department(string Name)
         {
             this.Name = Name;
-            Employees = new List<Employee>();
+           // Employees = new List<Employee>();
         }
         public  void AddEmployee(Employee employee)
         {
-            var department = Departments.FirstOrDefault(d => d.Name == employee.GetDepartment().Name);
-            if (department == null) throw new Exception("Department is null ");
-            else
-            {
-                if (employee == null) throw new ArgumentNullException("employee not exist");
-
-                department.Employees.Add(employee);
-
-            }
-
-        }
-        public static void RemoveEmployee( int EmployeeId)
-        {
-            var employee = Company.Employees.FirstOrDefault(e=> e.GetId() == EmployeeId);
-            if (employee == null) throw new ArgumentNullException("employee not exist");
-
-            var department = Company.Departments.FirstOrDefault(d=>d.Name==employee.GetDepartment().Name);
-            if (department == null) throw new Exception("Department  of this employee is null ");
-
-                department.Employees.Remove(employee);
             
-
+                if (employee == null) throw new ArgumentNullException("employee not exist");
+                Employees.Add(employee);
+        }
+        public void RemoveEmployee(Employee employee)
+        {
+                Employees.Remove(employee);
         }
         // remove static keywords 
         // class  Implementing Performance Management

@@ -8,7 +8,7 @@ namespace EmployeeManagementSystem
 {
     public enum PositionLevel
     {
-        fresh,
+        fresh = 1 ,
         junior,
         senior,
         teamleader,

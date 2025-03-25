@@ -9,9 +9,8 @@ namespace EmployeeManagementSystem
 {
     public  class Company
     {
-        public  List<Department> Departments { get; set; }
-        public  List<Employee> Employees { get; set; }
-        public  List<Employee> FakeEmployees { get; set; }
+        public List<Department> Departments = new List<Department>();
+        public List<Employee> Employees = new List<Employee>(); 
 
         
 
@@ -32,16 +31,35 @@ namespace EmployeeManagementSystem
                 Console.WriteLine("Employee added successfully.");
             }
         }
-        //public void RemoveEmployeeById(int id) { 
-
-        //}
+        public void RemoveEmployee(Employee employee) {
+            if (Employees.Any(Employeee => Employeee.GetId() == employee.GetId()))
+            {
+                Employees.Remove(employee);
+                Console.WriteLine("This Employee Has been Removed!");
+                return;
+            }
+        }
+        public void AddDepartment(Department department)
+        {
+            Departments.Add(department);
+        }
+        public void RemoveDepartment(Department department)
+        {
+            Departments.Remove(department);
+        }
         public void Promote(int id)
         {
             Employee employee = GetEmployeeById(id);
+            if (employee == null)
+            {
+                Console.WriteLine("This Employee does not Exist!");
+                return ;
+            }
             if (employee.GetPositionLevel() == PositionLevel.head)
                 Console.WriteLine("Employee can not promote than a head ");
             else
             {
+                // Calculate Average rate
                 switch (employee.Rating)
                 {
                     case EmployeeRating.Poor:
@@ -56,86 +74,44 @@ namespace EmployeeManagementSystem
                     case EmployeeRating.Excellent:
                         {
                             employee.Promote();
-                            Console.WriteLine($" Employee is Promoted to {employee.GetPositionLevel}");
+                            Console.WriteLine($" Employee is Promoted to {employee.GetPositionLevel().ToString()}");
                         }
                         break;
 
                 }
             }
-
-            //static void TransferEmployee()
-            //{
-            //    try
-            //    {
-            //        Console.Write("Enter Employee ID: ");
-            //        int id = int.Parse(Console.ReadLine());
-            //        Console.Write("Enter New Department: ");
-            //        string newDept = Console.ReadLine();
-
-            //        Employee emp = company.GetEmployeeById(id);
-            //        if (emp != null)
-            //        {
-            //            emp.TransferDepartment(newDept);
-            //            Console.WriteLine("Employee transferred successfully!");
-            //        }
-            //        else
-            //        {
-            //            Console.WriteLine("Employee not found!");
-            //        }
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        Console.WriteLine($"Error: {ex.Message}");
-            //    }
-            //}
-
-            //static void PromoteEmployee()
-            //{
-            //    try
-            //    {
-            //        Console.Write("Enter Employee ID: ");
-            //        int id = int.Parse(Console.ReadLine());
-            //        Console.Write("Enter Promotion Amount: ");
-            //        decimal amount = decimal.Parse(Console.ReadLine());
-
-            //        Employee emp = company.GetEmployeeById(id);
-            //        if (emp != null)
-            //        {
-            //            emp.Promote(amount);
-            //            Console.WriteLine("Employee promoted successfully!");
-            //        }
-            //        else
-            //        {
-            //            Console.WriteLine("Employee not found!");
-            //        }
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        Console.WriteLine($"Error: {ex.Message}");
-            //    }
-            //}
-        }
-        public void AddDepartment(Department department)
-        {
-            Departments.Add(department);
         }
 
         public void GenerateReport()
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("====================================");
-            Console.WriteLine("           Company Report           ");
-            Console.WriteLine("====================================");
-            Console.ResetColor();
-
-            Console.WriteLine("{0,-10} | {1,-20} | {2,-10} | {3,-10}", "ID", "Name", "Age", "Salary", "Department");
+            Console.WriteLine(new string('=', 55));
+            Console.WriteLine("                    COMPANY REPORT          ");
+            Console.WriteLine(new string('=', 55));
+            Console.WriteLine("\n");
+            Console.WriteLine("                    *DEPARTMENTS*            ");
             Console.WriteLine(new string('-', 55));
+            Console.WriteLine(" {0,-15} | {1,-20 :C}", "Department Name", "Department Head");
+            Console.WriteLine(new string('-', 55));
+
+            foreach (var departments in Departments)
+            {
+                Console.WriteLine(" {0,-15} | {1,-20 :C}", departments.Name,departments.DepartmentHead);
+            }
+
+            Console.WriteLine("\n");
+            Console.WriteLine("                    *EMPLOYEES*            ");
+            Console.WriteLine(new string('-', 75));
+
+            Console.WriteLine(" {0,-10} | {1,-20} | {2,-10} | {3,-10} | {4,-10}", "Name", "Age", "Salary", "Department","Position");
+            Console.WriteLine(new string('-', 75));
 
             foreach (var employeees in Employees)
             {
-                Console.WriteLine("{0,-10} | {1,-20} | {2,-10} | {3,-10:C}", employeees.GetName(), employeees.GetAge(), employeees.GetSalary(), employeees.GetDepartment());
+                Console.WriteLine(" {0,-10} | {1,-20} | {2,-10} | {3,-10:C} | {4,-10}", employeees.GetName(), employeees.GetAge(), employeees.GetSalary(), employeees.GetDepartment().Name , employeees.GetPositionLevel().ToString());
             }
+            Console.ReadKey();
         }
     }
 }
