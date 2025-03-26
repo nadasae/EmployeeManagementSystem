@@ -7,7 +7,7 @@ namespace EmployeeManagementSystem
     internal class Program
     {
 
-        static Company company = new Company();
+      
         
         static void Main()
         {
@@ -21,9 +21,9 @@ namespace EmployeeManagementSystem
                 Console.WriteLine("║  EMPLOYEE MANGMENT SYSTEM  ║");
                 Console.WriteLine("╚════════════════════════════╝");
                 Console.WriteLine("\n");
-                Console.WriteLine("1. Add Employee");
-                Console.WriteLine("2. Add Department");
-                //Console.WriteLine("3. Transfer Employee");
+                Console.WriteLine("1. Add Department ");
+                Console.WriteLine("2. Add Employee");
+                Console.WriteLine("3. Terminate Employee");
                 Console.WriteLine("4. Promote Employee");
                 Console.WriteLine("5. Generate Report");
                 Console.WriteLine("6. Exit");
@@ -33,19 +33,19 @@ namespace EmployeeManagementSystem
                 switch (choice)
                 {
                     case "1":
-                        AddEmployee();
-                        break;
-                    case "2":
                         AddDepartment();
                         break;
-                    //case "3":
-                    //    TransferEmployee();
-                    //    break;
+                    case "2":
+                        AddEmployee();
+                        break;
+                    case "3":
+                        TerminateEmployee();
+                       break;
                     case "4":
                         PromoteEmployee();
                         break;
                     case "5":
-                        company.GenerateReport();
+                        Company.GenerateReport();
                         break;
                     case "6":
                         Console.WriteLine("Exiting...");
@@ -63,36 +63,44 @@ namespace EmployeeManagementSystem
         {
             try
             {
-                
-
-                //Console.Write("");
-
                 string name = ReadFromUser.ReadString("Enter Name: ");
                 int age = ReadFromUser.ReadInteger("Enter Age: ", 20, 60);
-                //if (!int.TryParse(Console.ReadLine(), out int age))
-                //{
-                //    throw new Exception("Invalid Age format!");
-                //}
-
-                //Console.Write("Enter Salary: ");
                 decimal salary = ReadFromUser.ReadRealNumber("Enter Salary: ", 5000, 1000000);
-                //if (!decimal.TryParse(Console.ReadLine(), out decimal salary))
-                //{
-                //    throw new Exception("Invalid Salary format!");
-                //}
 
-                Console.Write("Enter Department: ");
-                string NameOfDepartmentAsString = Console.ReadLine();
-                Department department = CheckDepartmentExisiting(NameOfDepartmentAsString);
-                //Department department = new Department(NameOfDepartmentAsString);
-                Console.Write("Choose then enter The Position Level:  1- fresh, 2- junior, 3- senior, 4- teamleader, 5- head \n ");
-                string positionLevel = Console.ReadLine();
+                Department department = null;
+                while (department == null)
+                {
+                    Console.Write("Enter Department: ");
+                    string NameOfDepartmentAsString = Console.ReadLine().Trim();
 
-                Employee emp = new Employee(name, age, salary,department,positionLevel);
+                    department = CheckDepartmentExisting(NameOfDepartmentAsString);
+                    if (department == null)
+                    {
+                        Console.WriteLine("This department does not exist! Please enter a valid one.");
+                    }
+                }
+
+                PositionLevel positionLevel;
+                while (true)
+                {
+                    Console.WriteLine("Choose The Position Level: ");
+                    Console.WriteLine("1- fresh, 2- junior, 3- senior, 4- teamleader, 5- head");
+                    Console.Write("Enter the number corresponding to the position level: ");
+
+                    string input = Console.ReadLine();
+                    if (Enum.TryParse(input, out positionLevel) && Enum.IsDefined(typeof(PositionLevel), positionLevel))
+                    {
+                        break; 
+                    }
+                    Console.WriteLine("Invalid position level! Please enter a valid number (1-5).");
+                }
+
                 
-                company.AddEmployee(emp);
+                Employee emp = new Employee(name, age, salary, department, positionLevel.ToString());
+                Company.AddEmployee(emp);
+
                 Console.Beep();
-                
+               
             }
             catch (Exception ex)
             {
@@ -101,17 +109,35 @@ namespace EmployeeManagementSystem
         }
 
 
+
+
         static void AddDepartment()
         {
             try
             {
                 Console.Write("Enter Department Name: ");
-                string name = Console.ReadLine();
+                string name = Console.ReadLine().Trim().ToUpper(); 
+
+                if (string.IsNullOrWhiteSpace(name) || !IsValidDepartmentName(name))
+                {
+                    Console.WriteLine("Invalid department name! Please enter a valid name.");
+                    return; 
+                }
+
+                Department existingDept = CheckDepartmentExisting(name);
+                if (existingDept != null)
+                {
+                    Console.WriteLine("Department already exists!");
+                    return;
+                }
+
                 Console.Write("Enter Department Head: ");
-                string head = Console.ReadLine();
+                string head = Console.ReadLine().Trim();
 
                 Department dept = new Department(name);
-                company.AddDepartment(dept);
+
+                Company.AddDepartment(dept);
+
                 Console.Beep();
                 Console.WriteLine("Department added successfully!");
             }
@@ -120,27 +146,25 @@ namespace EmployeeManagementSystem
                 Console.WriteLine($"Error: {ex.Message}");
             }
         }
-
-        public static Department CheckDepartmentExisiting(string NameOfDepartment)
+        static bool IsValidDepartmentName(string name)
         {
-            foreach (var department in company.Departments)
-            {
-                if (department.Name == NameOfDepartment)
-                {
-                    return department; 
-                }
-            }
-            Department NewDepartment = new Department(NameOfDepartment);
-            company.AddDepartment(NewDepartment);
-            return NewDepartment;
+          
+            return name.All(c => char.IsLetter(c) || char.IsWhiteSpace(c));
         }
+
+
+        public static Department CheckDepartmentExisting(string NameOfDepartment)
+        {
+            return Company.Departments.FirstOrDefault(department => department.Name == NameOfDepartment);
+        }
+
         static void PromoteEmployee()
         {
             Console.WriteLine("Enter Employee Id: ");
             int Id ;
             if (int.TryParse(Console.ReadLine(), out Id))
             {
-                company.Promote(Id);
+                Company.Promote(Id);
             }
             else
             {
@@ -148,31 +172,32 @@ namespace EmployeeManagementSystem
             }
 
         }
-        //static void TransferEmployee()
-        //{
-        //    try
-        //    {
-        //        Console.Write("Enter Employee ID: ");
-        //        int id = int.Parse(Console.ReadLine());
-        //        Console.Write("Enter New Department: ");
-        //        string newDept = Console.ReadLine();
+        static void TerminateEmployee()
+        {
+            try
+            {
+                Console.Write("Enter Employee ID: ");
+                int id = int.Parse(Console.ReadLine());
+                
 
-        //        Employee emp = company.GetEmployeeById(id);
-        //        if (emp != null)
-        //        {
-        //            emp.TransferDepartment(newDept);
-        //            Console.WriteLine("Employee transferred successfully!");
-        //        }
-        //        else
-        //        {
-        //            Console.WriteLine("Employee not found!");
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine($"Error: {ex.Message}");
-        //    }
-        //}
+                Employee employee = Company.GetEmployeeById(id);
+                if (employee != null)
+                {
+                    bool IsEmployeeTerminate = employee.IsEmployeeTerminate();
+                    if (IsEmployeeTerminate == true)
+                    {
+                        employee.SetEmployeeTerminate();
+                        Console.WriteLine("Employee has been Terminated!");
+                    }
+                    
+                }
+               
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+        }
 
         //static void PromoteEmployee()
         //{
