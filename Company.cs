@@ -4,15 +4,18 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using static EmployeeManagementSystem.PerformanceReview;
 
 namespace EmployeeManagementSystem
 {
     public  class Company
     {
         public List<Department> Departments = new List<Department>();
-        public List<Employee> Employees = new List<Employee>(); 
+        public List<Employee> Employees = new List<Employee>();
+        public Dictionary<Employee, List<PerformanceReview>> PerformanceReviews
+        { get; private set; }
+ = new Dictionary<Employee, List<PerformanceReview>>();
 
-        
 
         public  Employee GetEmployeeById(int id)
         {
@@ -49,6 +52,7 @@ namespace EmployeeManagementSystem
         }
         public void Promote(int id)
         {
+            Company company = new Company();
             Employee employee = GetEmployeeById(id);
             if (employee == null)
             {
@@ -60,18 +64,18 @@ namespace EmployeeManagementSystem
             else
             {
                 // Calculate Average rate
-                switch (employee.Rating)
+                var AverageRate = company.PerformanceReviews[employee].Average(r => (int)r.rating);
+                Rating roundedAverage = (Rating)Math.Round(AverageRate);
+                switch (roundedAverage)
                 {
-                    case EmployeeRating.Poor:
+                    case Rating.Poor:
                         Console.WriteLine($" Employee does not qualify for a promotion.");
                         break;
-                    case EmployeeRating.Average:
+                    case Rating.Average:
                         Console.WriteLine($" Employee needs to improve performance for promotion.");
                         break;
-                    case EmployeeRating.Good:
-                        Console.WriteLine($"Employee is considered for a promotion.");
-                        break;
-                    case EmployeeRating.Excellent:
+                    case Rating.Good:
+                    case Rating.Excellent:
                         {
                             employee.Promote();
                             Console.WriteLine($" Employee is Promoted to {employee.GetPositionLevel().ToString()}");

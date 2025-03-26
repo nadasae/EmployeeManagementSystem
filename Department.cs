@@ -11,6 +11,7 @@ namespace EmployeeManagementSystem
      
         public string Name { get; set; }
         public Employee DepartmentHead { get; set; }
+        public int EmployeeId { get; set; }
         public List<Employee> Employees { get; set; }
         public Department(string Name)
         {
@@ -22,8 +23,10 @@ namespace EmployeeManagementSystem
             
                 if (employee == null) throw new ArgumentNullException("employee not exist");
                 Employees.Add(employee);
+            Company company = new Company();
+            company.PerformanceReviews[employee] = new List<PerformanceReview>(4);
         }
-        public void RemoveEmployee(Employee employee)
+        public void RemoveEmployee(Employee employee) 
         {
                 Employees.Remove(employee);
         }

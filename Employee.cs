@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using static EmployeeManagementSystem.PerformanceReview;
 
 namespace EmployeeManagementSystem
 {
@@ -18,11 +19,11 @@ namespace EmployeeManagementSystem
         private static int counter = 0;
         private PositionLevel PositionLevel;
         private bool Statues;
-        public EmployeeRating Rating;
+        //public EmployeeRating Rating;
 
         public Employee()
         {
-            
+
         }
         public Employee(string name, int age, decimal salary, Department department, string positionLevel)
         {
@@ -34,7 +35,45 @@ namespace EmployeeManagementSystem
             PositionLevel = (PositionLevel)Enum.Parse(typeof(PositionLevel), positionLevel, true);
             EmploymentDate = DateTime.Now;
             Statues = true;
-            Rating = EmployeeRating.Average;
+          
+            //Rating = EmployeeRating.Average;
+        }
+        public void AddDepartmentHead(int EmployeeId)
+        {
+            Company company = new Company();
+            var employee = company.Employees.FirstOrDefault(e => e.GetId() == EmployeeId);
+            if (employee == null) throw new Exception("Employee doesn't exist");
+            var AverageRate = company.PerformanceReviews[employee].Average(r => (int)r.rating);
+            Rating roundedAverage = (Rating)Math.Round(AverageRate);
+            if (roundedAverage == Rating.Excellent) { 
+            Department department = employee.GetDepartment();
+                department.DepartmentHead = employee;
+                department.EmployeeId = EmployeeId;
+                Console.WriteLine("Successfully you became a Head for your department");
+            }
+            else
+            {
+                Console.WriteLine("Unfortunatily, You can't be a head right now " +
+                    "Do your best to deserve it ");
+            }
+        }
+        public void AddPerformanceReview(int employeeId, Rating rating)
+        {
+            Company company = new Company();
+            var employee = company.Employees.FirstOrDefault(e => e.GetId() == employeeId);
+            if (employee == null) throw new Exception("Employee doesn't exist");
+            var review = new PerformanceReview(rating);
+            if (!company.PerformanceReviews.ContainsKey(employee))
+            {
+                company.PerformanceReviews[employee] = new List<PerformanceReview>();
+            }
+            company.PerformanceReviews[employee].Add(review);
+        }
+        public Employee GetEmployeeById(int id)
+        {
+            Company company = new Company();   
+            return company.Employees.FirstOrDefault(employee => employee.GetId() == id);
+
         }
         public int GetId()
         {
@@ -51,7 +90,7 @@ namespace EmployeeManagementSystem
         }
         public void SetSalary(decimal salary)
         {
-            Salary = Salary;
+            Salary = salary;
 
         }
         public decimal GetSalary()
@@ -84,7 +123,7 @@ namespace EmployeeManagementSystem
         {
             return PositionLevel;
         }
-        
+
         public void GetEmploymentDate()
         {
             Console.WriteLine($"{EmploymentDate.ToShortDateString()}");
@@ -99,24 +138,26 @@ namespace EmployeeManagementSystem
         }
         public void Promote()
         {
-            
-                PositionLevel++;
+
+            PositionLevel++;
+            //salary to be added
         }
 
 
         public void TrasnferDepartment(string NewDepartment)
         {
-
+            Company company = new Company();
             if (GetDepartment().Name == NewDepartment)
                 throw new Exception("You'r already in this department");
-            var department = Company.Departments.FirstOrDefault(d => d.Name == NewDepartment);
+            var department = company.Departments.FirstOrDefault(d => d.Name == NewDepartment);
 
             if (department == null)
             {
                 department = new Department(NewDepartment);
-                Company.Departments.Add(department);
+                company.Departments.Add(department);
             }
             SetDepartment(department);
 
         }
     }
+}
