@@ -7,8 +7,8 @@ namespace EmployeeManagementSystem
     internal class Program
     {
 
-      
-        
+
+
         static void Main()
         {
             while (true)
@@ -41,7 +41,7 @@ namespace EmployeeManagementSystem
                         break;
                     case "3":
                         TerminateEmployee();
-                       break;
+                        break;
                     case "4":
                         PromoteEmployee();
                         break;
@@ -91,17 +91,17 @@ namespace EmployeeManagementSystem
                     string input = Console.ReadLine();
                     if (Enum.TryParse(input, out positionLevel) && Enum.IsDefined(typeof(PositionLevel), positionLevel))
                     {
-                        break; 
+                        break;
                     }
                     Console.WriteLine("   Invalid position level! Please enter a valid number (1-5).");
                 }
 
-                
+
                 Employee emp = new Employee(name, age, salary, department, positionLevel.ToString());
                 Company.AddEmployee(emp);
 
                 Console.Beep();
-               
+
             }
             catch (Exception ex)
             {
@@ -114,12 +114,12 @@ namespace EmployeeManagementSystem
             try
             {
                 Console.Write("   Enter Department Name: ");
-                string name = Console.ReadLine().Trim().ToUpper(); 
+                string name = Console.ReadLine().Trim().ToUpper();
 
                 if (string.IsNullOrWhiteSpace(name) || !IsValidDepartmentName(name))
                 {
                     Console.WriteLine("   Invalid department name! Please enter a valid name.");
-                    return; 
+                    return;
                 }
 
                 Department existingDept = CheckDepartmentExisting(name);
@@ -147,7 +147,7 @@ namespace EmployeeManagementSystem
         }
         static bool IsValidDepartmentName(string name)
         {
-          
+
             return name.All(c => char.IsLetter(c) || char.IsWhiteSpace(c));
         }
         public static Department CheckDepartmentExisting(string NameOfDepartment)
@@ -157,7 +157,7 @@ namespace EmployeeManagementSystem
         static void PromoteEmployee()
         {
             Console.Write("   Enter Employee Id: ");
-            int Id ;
+            int Id;
             if (int.TryParse(Console.ReadLine(), out Id))
             {
                 Company.Promote(Id);
@@ -174,7 +174,7 @@ namespace EmployeeManagementSystem
             {
                 Console.Write("   Enter Employee ID: ");
                 int id = int.Parse(Console.ReadLine());
-                
+
 
                 Employee employee = Company.GetEmployeeById(id);
                 if (employee != null)
@@ -185,9 +185,9 @@ namespace EmployeeManagementSystem
                         employee.SetEmployeeTerminate();
                         Console.WriteLine("   Employee has been Terminated!");
                     }
-                    
+
                 }
-               
+
             }
             catch (Exception ex)
             {

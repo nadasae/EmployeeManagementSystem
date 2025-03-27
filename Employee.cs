@@ -19,10 +19,9 @@ namespace EmployeeManagementSystem
         private DateTime EmploymentDate;
         private static int counter = 0;
         private PositionLevel PositionLevel;
-        private bool Statues;
+        private bool TerminatedStatus;
         public Dictionary<Employee, List<PerformanceReview>> PerformanceReviews
-        { get; private set; }
-    = new Dictionary<Employee, List<PerformanceReview>>();
+        { get; private set; } = new Dictionary<Employee, List<PerformanceReview>>();
 
         public Employee()
         {
@@ -37,18 +36,19 @@ namespace EmployeeManagementSystem
             Department = department;
             PositionLevel = (PositionLevel)Enum.Parse(typeof(PositionLevel), positionLevel, true);
             EmploymentDate = DateTime.Now;
-            Statues = true;
-          
+            TerminatedStatus = false;
+
             //Rating = EmployeeRating.Average;
         }
-        public  void AddDepartmentHead(int EmployeeId)
-        { 
+        public void AddDepartmentHead(int EmployeeId)
+        {
             var employee = Company.Employees.FirstOrDefault(e => e.GetId() == EmployeeId);
             if (employee == null) throw new Exception("Employee doesn't exist");
             var AverageRate = Company.PerformanceReviews[employee].Average(r => (int)r.rating);
             Rating roundedAverage = (Rating)Math.Round(AverageRate);
-            if (roundedAverage == Rating.Excellent) { 
-            Department department = employee.GetDepartment();
+            if (roundedAverage == Rating.Excellent)
+            {
+                Department department = employee.GetDepartment();
                 department.DepartmentHead = employee;
                 department.EmployeeId = EmployeeId;
                 Console.WriteLine("Successfully you became a Head for your department");
@@ -59,9 +59,11 @@ namespace EmployeeManagementSystem
                     "Do your best to deserve it ");
             }
         }
+
+
         public void AddPerformanceReview(int employeeId, Rating rating)
         {
-            
+
             var employee = Company.Employees.FirstOrDefault(e => e.GetId() == employeeId);
             if (employee == null) throw new Exception("Employee doesn't exist");
             var review = new PerformanceReview(rating);
@@ -73,7 +75,7 @@ namespace EmployeeManagementSystem
         }
         public Employee GetEmployeeById(int id)
         {
-             
+
             return Company.Employees.FirstOrDefault(employee => employee.GetId() == id);
 
         }
@@ -125,7 +127,10 @@ namespace EmployeeManagementSystem
         {
             return PositionLevel;
         }
-
+        //public EmployeeRating GetRating()
+        //{
+        //    return Rating;
+        //}
         public void GetEmploymentDate()
         {
             Console.WriteLine($"{EmploymentDate.ToShortDateString()}");
@@ -148,7 +153,7 @@ namespace EmployeeManagementSystem
 
         public void TrasnferDepartment(string NewDepartment)
         {
-          
+
             if (GetDepartment().Name == NewDepartment)
                 throw new Exception("You'r already in this department");
             var department = Company.Departments.FirstOrDefault(d => d.Name == NewDepartment);

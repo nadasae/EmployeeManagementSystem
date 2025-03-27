@@ -13,11 +13,10 @@ namespace EmployeeManagementSystem
         public static List<Department> Departments = new List<Department>();
         public static List<Employee> Employees = new List<Employee>();
         public static Dictionary<Employee, List<PerformanceReview>> PerformanceReviews
-        { get; private set; }
- = new Dictionary<Employee, List<PerformanceReview>>();
+        { get; private set; } = new Dictionary<Employee, List<PerformanceReview>>();
 
 
-        public  static Employee GetEmployeeById(int id)
+        public static Employee GetEmployeeById(int id)
         {
             return Employees.FirstOrDefault(employee => employee.GetId() == id);
         }
@@ -62,7 +61,7 @@ namespace EmployeeManagementSystem
 
         public static void Promote(int id)
         {
-          
+
             Employee employee = GetEmployeeById(id);
             if (employee == null)
             {
@@ -81,16 +80,16 @@ namespace EmployeeManagementSystem
             switch (roundedAverage)
             {
                 case Rating.Poor:
-                    Console.WriteLine($" Employee does not qualify for a promotion.");
+                    Console.WriteLine($"   Employee does not qualify for a promotion.");
                     break;
                 case Rating.Average:
-                    Console.WriteLine($" Employee needs to improve performance for promotion.");
+                    Console.WriteLine($"   Employee needs to improve performance for promotion.");
                     break;
                 case Rating.Good:
                 case Rating.Excellent:
                     {
                         employee.Promote();
-                        Console.WriteLine($" Employee is Promoted to {employee.GetPositionLevel().ToString()}");
+                        Console.WriteLine($"   Employee is Promoted to {employee.GetPositionLevel().ToString()}");
                     }
                     break;
             }

@@ -20,17 +20,17 @@ namespace EmployeeManagementSystem
         }
         public void AddEmployee(Employee employee)
         {
-            
-                if (employee == null) throw new ArgumentNullException("employee not exist");
-                Employees.Add(employee);
-                   employee.PerformanceReviews[employee] = new List<PerformanceReview>(4);
+
+            if (employee == null) throw new ArgumentNullException("employee not exist");
+            Employees.Add(employee);
+            employee.PerformanceReviews[employee] = new List<PerformanceReview>(4);
         }
-        public void RemoveEmployee(Employee employee) 
+        public void RemoveEmployee(Employee employee)
         {
             Employees.Remove(employee);
         }
-        
-       
+
+
 
 
     }
