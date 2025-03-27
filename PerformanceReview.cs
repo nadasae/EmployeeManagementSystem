@@ -18,7 +18,8 @@ namespace EmployeeManagementSystem
             Poor,
             Average,
             Good,
-            Excellent
+            Excellent,
+            NotRated
         }
 
     }

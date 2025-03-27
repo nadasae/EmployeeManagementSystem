@@ -40,15 +40,21 @@ namespace EmployeeManagementSystem
 
             //Rating = EmployeeRating.Average;
         }
-        public void AddDepartmentHead(int EmployeeId)
+        public void AddDepartmentHead(int EmployeeId,string Name)
         {
-            var employee = Company.Employees.FirstOrDefault(e => e.GetId() == EmployeeId);
-            if (employee == null) throw new Exception("Employee doesn't exist");
-            var AverageRate = Company.PerformanceReviews[employee].Average(r => (int)r.rating);
-            Rating roundedAverage = (Rating)Math.Round(AverageRate);
-            if (roundedAverage == Rating.Excellent)
+            var employee = Company.Employees.FirstOrDefault(e => e.Id == EmployeeId);
+            if (employee == null)
             {
-                Department department = employee.GetDepartment();
+                Console.WriteLine("Employee doesn't exist");
+                return;
+            }
+            var department = Company.Departments.FirstOrDefault(d => d.Name == Name);
+            if (department == null)
+            {
+                Console.WriteLine("department not exist");
+                return;
+            }
+            if(employee.PositionLevel==PositionLevel.teamleader|| employee.PositionLevel == PositionLevel.head) { 
                 department.DepartmentHead = employee;
                 department.EmployeeId = EmployeeId;
                 Console.WriteLine("Successfully you became a Head for your department");
@@ -127,10 +133,14 @@ namespace EmployeeManagementSystem
         {
             return PositionLevel;
         }
-        //public EmployeeRating GetRating()
-        //{
-        //    return Rating;
-        //}
+        public Rating GetCurrentRating()
+        {
+            if (PerformanceReviews[this].Count == 0)
+            {
+                return Rating.NotRated;
+            }
+           return PerformanceReviews[this][PerformanceReviews[this].Count - 1].rating;
+        }
         public void GetEmploymentDate()
         {
             Console.WriteLine($"{EmploymentDate.ToShortDateString()}");

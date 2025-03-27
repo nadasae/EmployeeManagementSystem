@@ -75,23 +75,26 @@ namespace EmployeeManagementSystem
                 return;
             }
             // Calculate Average rate
-            var AverageRate = PerformanceReviews[employee].Average(r => (int)r.rating);
-            Rating roundedAverage = (Rating)Math.Round(AverageRate);
-            switch (roundedAverage)
+            if (PerformanceReviews[employee].Count != 0)
             {
-                case Rating.Poor:
-                    Console.WriteLine($"   Employee does not qualify for a promotion.");
-                    break;
-                case Rating.Average:
-                    Console.WriteLine($"   Employee needs to improve performance for promotion.");
-                    break;
-                case Rating.Good:
-                case Rating.Excellent:
-                    {
-                        employee.Promote();
-                        Console.WriteLine($"   Employee is Promoted to {employee.GetPositionLevel().ToString()}");
-                    }
-                    break;
+                var AverageRate = PerformanceReviews[employee].Average(r => (int)r.rating);
+                Rating roundedAverage = (Rating)Math.Round(AverageRate);
+                switch (roundedAverage)
+                {
+                    case Rating.Poor:
+                        Console.WriteLine($"   Employee does not qualify for a promotion.");
+                        break;
+                    case Rating.Average:
+                        Console.WriteLine($"   Employee needs to improve performance for promotion.");
+                        break;
+                    case Rating.Good:
+                    case Rating.Excellent:
+                        {
+                            employee.Promote();
+                            Console.WriteLine($"   Employee is Promoted to {employee.GetPositionLevel().ToString()}");
+                        }
+                        break;
+                }
             }
         }
 
@@ -165,7 +168,7 @@ namespace EmployeeManagementSystem
 
                 var employeesInDept = Employees.Where(e => e.GetDepartment().Name == department.Name).Distinct().ToList();
 
-                if (employeesInDept.Count == 0)
+                if (employeesInDept.Count(e => !e.IsEmployeeTerminate())==0)
                 {
                     Console.Write("   ");
                     Console.WriteLine(" No employees in this department.\n");
