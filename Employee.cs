@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static EmployeeManagementSystem.PerformanceReview;
 
+
 namespace EmployeeManagementSystem
 {
     public class Employee
@@ -131,11 +132,11 @@ namespace EmployeeManagementSystem
         }
         public void SetEmployeeTerminate()
         {
-            Statues = false;
+            TerminatedStatus = true;
         }
         public bool IsEmployeeTerminate()
         {
-            return Statues;
+            return TerminatedStatus;
         }
         public void Promote()
         {

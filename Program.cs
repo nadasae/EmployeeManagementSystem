@@ -17,17 +17,18 @@ namespace EmployeeManagementSystem
                 Console.ForegroundColor = ConsoleColor.Black;
                 Thread.Sleep(2000);
                 Console.Clear();
-                Console.WriteLine("╔════════════════════════════╗");
-                Console.WriteLine("║  EMPLOYEE MANGMENT SYSTEM  ║");
-                Console.WriteLine("╚════════════════════════════╝");
+                Console.WriteLine("                                             ╔════════════════════════════╗");
+                Console.WriteLine("                                             ║  EMPLOYEE MANGMENT SYSTEM  ║");
+                Console.WriteLine("                                             ╚════════════════════════════╝");
                 Console.WriteLine("\n");
-                Console.WriteLine("1. Add Department ");
-                Console.WriteLine("2. Add Employee");
-                Console.WriteLine("3. Terminate Employee");
-                Console.WriteLine("4. Promote Employee");
-                Console.WriteLine("5. Generate Report");
-                Console.WriteLine("6. Exit");
-                Console.Write("Enter your choice: ");
+                Console.WriteLine("   1. Add Department ");
+                Console.WriteLine("   2. Add Employee");
+                Console.WriteLine("   3. Terminate Employee");
+                Console.WriteLine("   4. Promote Employee");
+                Console.WriteLine("   5. Generate Report");
+                Console.WriteLine("   6. Exit");
+                Console.Write("\n");
+                Console.Write("   Enter your choice: ");
 
                 string choice = Console.ReadLine();
                 switch (choice)
@@ -63,36 +64,36 @@ namespace EmployeeManagementSystem
         {
             try
             {
-                string name = ReadFromUser.ReadString("Enter Name: ");
-                int age = ReadFromUser.ReadInteger("Enter Age: ", 20, 60);
-                decimal salary = ReadFromUser.ReadRealNumber("Enter Salary: ", 5000, 1000000);
+                string name = ReadFromUser.ReadString("   Enter Employee Name: ");
+                int age = ReadFromUser.ReadInteger("   Enter Employee Age: ", 20, 60);
+                decimal salary = ReadFromUser.ReadRealNumber("   Enter Employee Salary: ", 5000, 1000000);
 
                 Department department = null;
                 while (department == null)
                 {
-                    Console.Write("Enter Department: ");
-                    string NameOfDepartmentAsString = Console.ReadLine().Trim();
+                    Console.Write("   Enter Employee Department: ");
+                    string NameOfDepartmentAsString = Console.ReadLine().Trim().ToUpper();
 
                     department = CheckDepartmentExisting(NameOfDepartmentAsString);
                     if (department == null)
                     {
-                        Console.WriteLine("This department does not exist! Please enter a valid one.");
+                        Console.WriteLine("   This department does not exist! Please enter a valid one.");
                     }
                 }
 
                 PositionLevel positionLevel;
                 while (true)
                 {
-                    Console.WriteLine("Choose The Position Level: ");
-                    Console.WriteLine("1- fresh, 2- junior, 3- senior, 4- teamleader, 5- head");
-                    Console.Write("Enter the number corresponding to the position level: ");
+                    Console.WriteLine("   Choose The Position Level: ");
+                    Console.WriteLine("   1- fresh, 2- junior, 3- senior, 4- teamleader, 5- head");
+                    Console.Write("   Enter the number corresponding to the position level: ");
 
                     string input = Console.ReadLine();
                     if (Enum.TryParse(input, out positionLevel) && Enum.IsDefined(typeof(PositionLevel), positionLevel))
                     {
                         break; 
                     }
-                    Console.WriteLine("Invalid position level! Please enter a valid number (1-5).");
+                    Console.WriteLine("   Invalid position level! Please enter a valid number (1-5).");
                 }
 
                 
@@ -104,34 +105,31 @@ namespace EmployeeManagementSystem
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error: {ex.Message}");
+                Console.WriteLine($"   Error: {ex.Message}");
             }
         }
-
-
-
 
         static void AddDepartment()
         {
             try
             {
-                Console.Write("Enter Department Name: ");
+                Console.Write("   Enter Department Name: ");
                 string name = Console.ReadLine().Trim().ToUpper(); 
 
                 if (string.IsNullOrWhiteSpace(name) || !IsValidDepartmentName(name))
                 {
-                    Console.WriteLine("Invalid department name! Please enter a valid name.");
+                    Console.WriteLine("   Invalid department name! Please enter a valid name.");
                     return; 
                 }
 
                 Department existingDept = CheckDepartmentExisting(name);
                 if (existingDept != null)
                 {
-                    Console.WriteLine("Department already exists!");
+                    Console.WriteLine("   Department already exists!");
                     return;
                 }
 
-                Console.Write("Enter Department Head: ");
+                Console.Write("   Enter Department Head: ");
                 string head = Console.ReadLine().Trim();
 
                 Department dept = new Department(name);
@@ -139,11 +137,12 @@ namespace EmployeeManagementSystem
                 Company.AddDepartment(dept);
 
                 Console.Beep();
-                Console.WriteLine("Department added successfully!");
+                Console.Write("\n");
+                Console.WriteLine("   Department added successfully!");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error: {ex.Message}");
+                Console.WriteLine($"   Error: {ex.Message}");
             }
         }
         static bool IsValidDepartmentName(string name)
@@ -151,16 +150,13 @@ namespace EmployeeManagementSystem
           
             return name.All(c => char.IsLetter(c) || char.IsWhiteSpace(c));
         }
-
-
         public static Department CheckDepartmentExisting(string NameOfDepartment)
         {
             return Company.Departments.FirstOrDefault(department => department.Name == NameOfDepartment);
         }
-
         static void PromoteEmployee()
         {
-            Console.WriteLine("Enter Employee Id: ");
+            Console.Write("   Enter Employee Id: ");
             int Id ;
             if (int.TryParse(Console.ReadLine(), out Id))
             {
@@ -168,7 +164,7 @@ namespace EmployeeManagementSystem
             }
             else
             {
-                Console.WriteLine("Invalid number!");
+                Console.WriteLine("   Invalid number!");
             }
 
         }
@@ -176,7 +172,7 @@ namespace EmployeeManagementSystem
         {
             try
             {
-                Console.Write("Enter Employee ID: ");
+                Console.Write("   Enter Employee ID: ");
                 int id = int.Parse(Console.ReadLine());
                 
 
@@ -184,10 +180,10 @@ namespace EmployeeManagementSystem
                 if (employee != null)
                 {
                     bool IsEmployeeTerminate = employee.IsEmployeeTerminate();
-                    if (IsEmployeeTerminate == true)
+                    if (IsEmployeeTerminate == false)
                     {
                         employee.SetEmployeeTerminate();
-                        Console.WriteLine("Employee has been Terminated!");
+                        Console.WriteLine("   Employee has been Terminated!");
                     }
                     
                 }
@@ -195,7 +191,7 @@ namespace EmployeeManagementSystem
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error: {ex.Message}");
+                Console.WriteLine($"   Error: {ex.Message}");
             }
         }
 

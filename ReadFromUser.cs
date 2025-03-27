@@ -19,7 +19,7 @@ namespace EmployeeManagementSystem
                 {
                     break;
                 }
-                Console.Write($"Invalid input (integers only) {message} : ");
+                Console.Write($"   Invalid input (integers only) {message} : ");
             }
             return value;
         }
@@ -35,7 +35,7 @@ namespace EmployeeManagementSystem
                     if (value >= min && value <= max)
                         break;
                 }
-                Console.Write($"{message} : between {min} and {max} :  ");
+                Console.Write($"   {message} : between {min} and {max} :  ");
             }
             return value;
         }
@@ -54,7 +54,7 @@ namespace EmployeeManagementSystem
                         break;
                     }
                 }
-                Console.Write($"{message} : between {min} and {max} : ");
+                Console.Write($"   Salary Must be between {min} and {max} : ");
             }
             return value;
         }
