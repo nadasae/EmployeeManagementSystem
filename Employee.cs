@@ -19,7 +19,9 @@ namespace EmployeeManagementSystem
         private static int counter = 0;
         private PositionLevel PositionLevel;
         private bool Statues;
-        //public EmployeeRating Rating;
+        public Dictionary<Employee, List<PerformanceReview>> PerformanceReviews
+        { get; private set; }
+    = new Dictionary<Employee, List<PerformanceReview>>();
 
         public Employee()
         {
@@ -38,12 +40,11 @@ namespace EmployeeManagementSystem
           
             //Rating = EmployeeRating.Average;
         }
-        public void AddDepartmentHead(int EmployeeId)
-        {
-            Company company = new Company();
-            var employee = company.Employees.FirstOrDefault(e => e.GetId() == EmployeeId);
+        public  void AddDepartmentHead(int EmployeeId)
+        { 
+            var employee = Company.Employees.FirstOrDefault(e => e.GetId() == EmployeeId);
             if (employee == null) throw new Exception("Employee doesn't exist");
-            var AverageRate = company.PerformanceReviews[employee].Average(r => (int)r.rating);
+            var AverageRate = Company.PerformanceReviews[employee].Average(r => (int)r.rating);
             Rating roundedAverage = (Rating)Math.Round(AverageRate);
             if (roundedAverage == Rating.Excellent) { 
             Department department = employee.GetDepartment();
@@ -59,20 +60,20 @@ namespace EmployeeManagementSystem
         }
         public void AddPerformanceReview(int employeeId, Rating rating)
         {
-            Company company = new Company();
-            var employee = company.Employees.FirstOrDefault(e => e.GetId() == employeeId);
+            
+            var employee = Company.Employees.FirstOrDefault(e => e.GetId() == employeeId);
             if (employee == null) throw new Exception("Employee doesn't exist");
             var review = new PerformanceReview(rating);
-            if (!company.PerformanceReviews.ContainsKey(employee))
+            if (!Company.PerformanceReviews.ContainsKey(employee))
             {
-                company.PerformanceReviews[employee] = new List<PerformanceReview>();
+                Company.PerformanceReviews[employee] = new List<PerformanceReview>();
             }
-            company.PerformanceReviews[employee].Add(review);
+            Company.PerformanceReviews[employee].Add(review);
         }
         public Employee GetEmployeeById(int id)
         {
-            Company company = new Company();   
-            return company.Employees.FirstOrDefault(employee => employee.GetId() == id);
+             
+            return Company.Employees.FirstOrDefault(employee => employee.GetId() == id);
 
         }
         public int GetId()
@@ -146,15 +147,15 @@ namespace EmployeeManagementSystem
 
         public void TrasnferDepartment(string NewDepartment)
         {
-            Company company = new Company();
+          
             if (GetDepartment().Name == NewDepartment)
                 throw new Exception("You'r already in this department");
-            var department = company.Departments.FirstOrDefault(d => d.Name == NewDepartment);
+            var department = Company.Departments.FirstOrDefault(d => d.Name == NewDepartment);
 
             if (department == null)
             {
                 department = new Department(NewDepartment);
-                company.Departments.Add(department);
+                Company.Departments.Add(department);
             }
             SetDepartment(department);
 

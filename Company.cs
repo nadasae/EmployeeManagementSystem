@@ -12,15 +12,12 @@ namespace EmployeeManagementSystem
     {
         public static List<Department> Departments = new List<Department>();
         public static List<Employee> Employees = new List<Employee>();
-        public List<Department> Departments = new List<Department>();
-        public List<Employee> Employees = new List<Employee>();
-        public Dictionary<Employee, List<PerformanceReview>> PerformanceReviews
+        public static Dictionary<Employee, List<PerformanceReview>> PerformanceReviews
         { get; private set; }
  = new Dictionary<Employee, List<PerformanceReview>>();
 
-        public static Employee GetEmployeeById(int id)
 
-        public  Employee GetEmployeeById(int id)
+        public  static Employee GetEmployeeById(int id)
         {
             return Employees.FirstOrDefault(employee => employee.GetId() == id);
         }
@@ -65,7 +62,7 @@ namespace EmployeeManagementSystem
 
         public static void Promote(int id)
         {
-            Company company = new Company();
+          
             Employee employee = GetEmployeeById(id);
             if (employee == null)
             {
@@ -78,44 +75,24 @@ namespace EmployeeManagementSystem
                 Console.WriteLine("Employee cannot be promoted further than Head.");
                 return;
             }
-
-            switch (employee.Rating)
+            // Calculate Average rate
+            var AverageRate = PerformanceReviews[employee].Average(r => (int)r.rating);
+            Rating roundedAverage = (Rating)Math.Round(AverageRate);
+            switch (roundedAverage)
             {
-                case EmployeeRating.Poor:
+                case Rating.Poor:
                     Console.WriteLine($" Employee does not qualify for a promotion.");
                     break;
-                case EmployeeRating.Average:
+                case Rating.Average:
                     Console.WriteLine($" Employee needs to improve performance for promotion.");
                     break;
-                case EmployeeRating.Good:
-                    Console.WriteLine($"Employee is considered for a promotion.");
+                case Rating.Good:
+                case Rating.Excellent:
+                    {
+                        employee.Promote();
+                        Console.WriteLine($" Employee is Promoted to {employee.GetPositionLevel().ToString()}");
+                    }
                     break;
-                case EmployeeRating.Excellent:
-                    employee.Promote();
-                    Console.WriteLine($" Employee is promoted to {employee.GetPositionLevel()}.");
-                    break;
-            }
-        }
-                // Calculate Average rate
-                var AverageRate = company.PerformanceReviews[employee].Average(r => (int)r.rating);
-                Rating roundedAverage = (Rating)Math.Round(AverageRate);
-                switch (roundedAverage)
-                {
-                    case Rating.Poor:
-                        Console.WriteLine($" Employee does not qualify for a promotion.");
-                        break;
-                    case Rating.Average:
-                        Console.WriteLine($" Employee needs to improve performance for promotion.");
-                        break;
-                    case Rating.Good:
-                    case Rating.Excellent:
-                        {
-                            employee.Promote();
-                            Console.WriteLine($" Employee is Promoted to {employee.GetPositionLevel().ToString()}");
-                        }
-                        break;
-
-                }
             }
         }
 
