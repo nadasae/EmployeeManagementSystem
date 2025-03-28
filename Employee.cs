@@ -22,6 +22,7 @@ namespace EmployeeManagementSystem
         private bool TerminatedStatus;
         public Dictionary<Employee, List<PerformanceReview>> PerformanceReviews
         { get; private set; } = new Dictionary<Employee, List<PerformanceReview>>();
+        private Rating rating;
 
         public Employee()
         {
@@ -37,31 +38,30 @@ namespace EmployeeManagementSystem
             PositionLevel = (PositionLevel)Enum.Parse(typeof(PositionLevel), positionLevel, true);
             EmploymentDate = DateTime.Now;
             TerminatedStatus = false;
-
-            //Rating = EmployeeRating.Average;
+            rating = Rating.Excellent;
         }
         public void AddDepartmentHead(int EmployeeId,string Name)
         {
             var employee = Company.Employees.FirstOrDefault(e => e.Id == EmployeeId);
             if (employee == null)
             {
-                Console.WriteLine("Employee doesn't exist");
+                Console.WriteLine("   Employee doesn't exist");
                 return;
             }
             var department = Company.Departments.FirstOrDefault(d => d.Name == Name);
             if (department == null)
             {
-                Console.WriteLine("department not exist");
+                Console.WriteLine("  Department not exist");
                 return;
             }
             if(employee.PositionLevel==PositionLevel.teamleader|| employee.PositionLevel == PositionLevel.head) { 
                 department.DepartmentHead = employee;
                 department.EmployeeId = EmployeeId;
-                Console.WriteLine("Successfully you became a Head for your department");
+                Console.WriteLine("   Successfully you became a Head for your department");
             }
             else
             {
-                Console.WriteLine("Unfortunatily, You can't be a head right now " +
+                Console.WriteLine("   Unfortunatily, You can't be a head right now " +
                     "Do your best to deserve it ");
             }
         }
@@ -157,7 +157,7 @@ namespace EmployeeManagementSystem
         {
 
             PositionLevel++;
-            //salary to be added
+            Salary = Salary + Salary * 0.10m;
         }
 
 

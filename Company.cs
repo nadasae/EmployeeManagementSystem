@@ -113,7 +113,7 @@ namespace EmployeeManagementSystem
             PrintDepartments();
             PrintEmployeesByDepartment();
             PrintAllEmployees();
-            //PrintTopEmployees();
+            PrintTopEmployees();
             PrintTerminatedEmployees();
 
             Console.ForegroundColor = ConsoleColor.Black;
@@ -220,39 +220,39 @@ namespace EmployeeManagementSystem
             }
         }
 
-        //private static void PrintTopEmployees()
-        //{
-        //    Console.WriteLine("\n");
-        //    Console.ForegroundColor = ConsoleColor.Green;
-        //    Console.WriteLine("                    *TOP EMPLOYEES*            ");
-        //    Console.Write("   ");
-        //    Console.WriteLine(new string('-', 100));
-        //    Console.Write("   ");
-        //    Console.WriteLine(" {0,-10} | {1,-20} | {2,-10} | {3,-10} | {4,-10} | {5,-10} | {6,-10}",
-        //                      "ID", "Name", "Age", "Salary", "Position", "Department", "Performance");
-        //    Console.Write("   ");
-        //    Console.WriteLine(new string('-', 100));
+        private static void PrintTopEmployees()
+        {
+            Console.WriteLine("\n");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("                    *TOP EMPLOYEES*            ");
+            Console.Write("   ");
+            Console.WriteLine(new string('-', 100));
+            Console.Write("   ");
+            Console.WriteLine(" {0,-10} | {1,-20} | {2,-10} | {3,-10} | {4,-10} | {5,-10} | {6,-10}",
+                              "ID", "Name", "Age", "Salary", "Position", "Department", "Performance");
+            Console.Write("   ");
+            Console.WriteLine(new string('-', 100));
 
-        //    foreach (var employee in Employees.Distinct())
-        //    {
-        //        if (employee.IsEmployeeTerminate() == false)
-        //        {
-        //            if (employee.GetRating() > EmployeeRating.Average)
-        //            {
-        //                Console.Write("   ");
-        //                Console.WriteLine(" {0,-10} | {1,-20} | {2,-10} | {3,-10:C} | {4,-10} | {5,-10} | {6,-10}",
-        //                          employee.GetId(), employee.GetName(), employee.GetAge(),
-        //                          employee.GetSalary(), employee.GetPositionLevel(),
-        //                          employee.GetDepartment().Name, employee.GetRating());
-        //                return;
-        //            }
+            foreach (var employee in Employees.Distinct())
+            {
+                if (employee.IsEmployeeTerminate() == false)
+                {
+                    if (employee.GetCurrentRating() > Rating.Average)
+                    {
+                        Console.Write("   ");
+                        Console.WriteLine(" {0,-10} | {1,-20} | {2,-10} | {3,-10:C} | {4,-10} | {5,-10} | {6,-10}",
+                                  employee.GetId(), employee.GetName(), employee.GetAge(),
+                                  employee.GetSalary(), employee.GetPositionLevel(),
+                                  employee.GetDepartment().Name, employee.GetCurrentRating());
+                        return;
+                    }
 
-        //            Console.WriteLine("No Employee has been in Top!");
-        //            return;
+                    Console.WriteLine("No Employee has been in Top!");
+                    return;
 
-        //        }
-        //    }
-        //}
+                }
+            }
+        }
         private static void PrintTerminatedEmployees()
         {
             Console.WriteLine("\n");
