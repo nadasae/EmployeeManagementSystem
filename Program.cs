@@ -23,10 +23,13 @@ namespace EmployeeManagementSystem
                 Console.WriteLine("\n");
                 Console.WriteLine("   1. Add Department ");
                 Console.WriteLine("   2. Add Employee");
-                Console.WriteLine("   3. Terminate Employee");
-                Console.WriteLine("   4. Promote Employee");
-                Console.WriteLine("   5. Generate Report");
-                Console.WriteLine("   6. Exit");
+                Console.WriteLine("   3. Promote Employee");
+                Console.WriteLine("   4. Transfer Employee To Different Department");
+                Console.WriteLine("   5. Terminate Employee");
+                Console.WriteLine("   6. Generate Report");
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.WriteLine("   7. Exit");
+                Console.ForegroundColor = ConsoleColor.Black;
                 Console.Write("\n");
                 Console.Write("   Enter your choice: ");
 
@@ -40,19 +43,22 @@ namespace EmployeeManagementSystem
                         AddEmployee();
                         break;
                     case "3":
-                        TerminateEmployee();
+                         PromoteEmployee();
                         break;
                     case "4":
-                        PromoteEmployee();
+                         TransferEmployeeFromDepartment();
                         break;
                     case "5":
-                        Company.GenerateReport();
+                        TerminateEmployee();
                         break;
                     case "6":
-                        Console.WriteLine("Exiting...");
+                        Company.GenerateReport();
+                        break;
+                    case "7":
+                        Console.WriteLine("  Exiting...");
                         return;
                     default:
-                        Console.WriteLine("Invalid choice! Please Choose [1,2,3,4,5,6], Try again.");
+                        Console.WriteLine("Invalid choice! Please Choose [1,2,3,4,5,6,7], Try again.");
                         break;
                 }
             }
@@ -195,31 +201,31 @@ namespace EmployeeManagementSystem
             }
         }
 
-        //static void PromoteEmployee()
-        //{
-        //    try
-        //    {
-        //        Console.Write("Enter Employee ID: ");
-        //        int id = int.Parse(Console.ReadLine());
-        //        Console.Write("Enter Promotion Amount: ");
-        //        decimal amount = decimal.Parse(Console.ReadLine());
+        static void TransferEmployeeFromDepartment()
+        {
+            try
+            {
+                Console.Write("   Enter Employee ID: ");
+                int id = int.Parse(Console.ReadLine());
+                Console.Write("   Enter Department You want to Transfer to : ");
+                string department = Console.ReadLine().Trim().ToUpper();
 
-        //        Employee emp = company.GetEmployeeById(id);
-        //        if (emp != null)
-        //        {
-        //            emp.Promote(amount);
-        //            Console.WriteLine("Employee promoted successfully!");
-        //        }
-        //        else
-        //        {
-        //            Console.WriteLine("Employee not found!");
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine($"Error: {ex.Message}");
-        //    }
-        //}
+                Employee empolyee = Company.GetEmployeeById(id);
+                if (empolyee != null)
+                {
+                    empolyee.TrasnferDepartment(department);
+                    Console.WriteLine("   Employee Transferd successfully!");
+                }
+                else
+                {
+                    Console.WriteLine("   Employee not found!");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"   Error: {ex.Message}");
+            }
+        }
     }
 
 }

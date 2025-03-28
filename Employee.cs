@@ -164,14 +164,14 @@ namespace EmployeeManagementSystem
         public void TrasnferDepartment(string NewDepartment)
         {
 
-            if (GetDepartment().Name == NewDepartment)
-                throw new Exception("You'r already in this department");
+            if (this.GetDepartment().Name == NewDepartment)
+                throw new Exception("   You'r already in this department");
             var department = Company.Departments.FirstOrDefault(d => d.Name == NewDepartment);
 
             if (department == null)
             {
-                department = new Department(NewDepartment);
-                Company.Departments.Add(department);
+                Console.WriteLine("   Department already exists!");
+                return;
             }
             SetDepartment(department);
 
