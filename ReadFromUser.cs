@@ -26,52 +26,74 @@ namespace EmployeeManagementSystem
         public static int ReadInteger(string message, int min, int max)
         {
             int value;
-
-            Console.Write(message);
             while (true)
             {
-                if (int.TryParse(Console.ReadLine(), out value))
+                Console.Write($"{message} (Between {min} and {max}): ");
+                string input = Console.ReadLine().Trim();
+
+                if (int.TryParse(input, out value))
                 {
                     if (value >= min && value <= max)
-                        break;
+                        return value;
+                    else
+                        Console.WriteLine($"   Error: Value must be between {min} and {max}.");
                 }
-                Console.Write($"   {message} : between {min} and {max} :  ");
+                else
+                {
+                    Console.WriteLine("   Error: Invalid number! Please enter a valid integer.");
+                }
             }
-            return value;
         }
 
-
-        public static decimal ReadRealNumber(string message, decimal min = decimal.MinValue, decimal max = decimal.MaxValue)
+        public static decimal ReadRealNumber(string message, decimal min, decimal max)
         {
             decimal value;
-            Console.Write(message);
             while (true)
             {
-                if (decimal.TryParse(Console.ReadLine(), out value))
+                Console.Write($"{message} (Between {min} and {max}): ");
+                string input = Console.ReadLine().Trim();
+
+                if (decimal.TryParse(input, out value))
                 {
                     if (value >= min && value <= max)
-                    {
-                        break;
-                    }
+                        return value;
+                    else
+                        Console.WriteLine($"   Error: Value must be between {min} and {max}.");
                 }
-                Console.Write($"   Salary Must be between {min} and {max} : ");
+                else
+                {
+                    Console.WriteLine("   Error: Invalid number! Please enter a valid decimal number.");
+                }
             }
-            return value;
         }
 
         public static string ReadString(string message)
         {
-            Console.Write(message);
-            string value;
             while (true)
             {
-                value = Console.ReadLine();
-                if (value.Trim() != "")
+                Console.Write(message);
+                string value = Console.ReadLine().Trim();
+
+                if (string.IsNullOrWhiteSpace(value))
                 {
-                    break;
+                    Console.WriteLine("   Error: Input cannot be empty. Please enter a valid name.");
+                }
+                else if (!value.All(c => char.IsLetter(c) || char.IsWhiteSpace(c)))
+                {
+                    Console.WriteLine("   Error: Name must contain only letters and spaces.");
+                }
+                else if (value.All(char.IsDigit))
+                {
+                    Console.WriteLine("   Error: Name cannot be a number.");
+                }
+                else
+                {
+                    return value;
                 }
             }
-            return value;
         }
+
+
+
     }
 }

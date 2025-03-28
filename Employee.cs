@@ -38,7 +38,7 @@ namespace EmployeeManagementSystem
             PositionLevel = (PositionLevel)Enum.Parse(typeof(PositionLevel), positionLevel, true);
             EmploymentDate = DateTime.Now;
             TerminatedStatus = false;
-            rating = Rating.Excellent;
+            rating = Rating.NotRated;
         }
         public void AddDepartmentHead(int EmployeeId,string Name)
         {

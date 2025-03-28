@@ -29,7 +29,7 @@ namespace EmployeeManagementSystem
                 return;
             }
             Employees.Add(employee);
-            Console.WriteLine("   Employee added successfully.");
+            
         }
 
         public static void RemoveEmployee(Employee employee)
@@ -98,7 +98,6 @@ namespace EmployeeManagementSystem
             }
         }
 
-
         public static void GenerateReport()
         {
 
@@ -113,7 +112,7 @@ namespace EmployeeManagementSystem
             PrintDepartments();
             PrintEmployeesByDepartment();
             PrintAllEmployees();
-            PrintTopEmployees();
+            //PrintTopEmployees();
             PrintTerminatedEmployees();
 
             Console.ForegroundColor = ConsoleColor.Black;
@@ -124,77 +123,78 @@ namespace EmployeeManagementSystem
             return;
         }
 
-        private static void PrintDepartments()
+        public static void PrintDepartments()
         {
             Console.WriteLine("                    *DEPARTMENTS*            ");
             Console.Write("   ");
             Console.WriteLine(new string('-', 60));
             Console.Write("   ");
-            Console.WriteLine(" {0,-20} | {1,-20}", "Department Name", "Department Head");
+            Console.WriteLine(" {0,-20} | {1,-20}", "Department Name",  "Department Head");
             Console.Write("   ");
             Console.WriteLine(new string('-', 60));
 
-
             foreach (var department in Departments.Distinct())
             {
+                string headName = "No Head Assigned";
+                if (department.DepartmentHead != null && !department.DepartmentHead.IsEmployeeTerminate())
+                {
+                    headName = department.DepartmentHead.GetName();
+                }
+
                 Console.Write("   ");
-                Console.WriteLine(" {0,-20} | {1,-20}", department.Name, department.DepartmentHead);
+                Console.WriteLine(" {0,-20} | {1,-20}", department.Name,  headName);
             }
 
             Console.WriteLine("\n");
-            return;
         }
 
-        private static void PrintEmployeesByDepartment()
+        public static void PrintEmployeesByDepartment()
         {
-            Console.WriteLine("                    *EMPLOYEES BY DEPARTMENT*            ");
+            Console.WriteLine("                    EMPLOYEES BY DEPARTMENT            ");
             Console.Write("   ");
-            Console.WriteLine(new string('-', 80));
-            Console.Write("   ");
+            Console.WriteLine(new string('-', 100));
+
             foreach (var department in Departments.Distinct())
             {
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
-                Console.Write("\n");
-                Console.Write("   ");
-                Console.WriteLine($"Department: {department.Name}");
+                Console.WriteLine($"\n   Department: {department.Name}");
 
-                Console.Write("   ");
-                Console.WriteLine(new string('-', 80));
-                Console.Write("   ");
-                Console.WriteLine(" {0,-10} | {1,-20} | {2,-10} | {3,-10} | {4,-10}",
+                Console.WriteLine("   " + new string('-', 80));
+                Console.WriteLine("   {0,-10} | {1,-20} | {2,-10} | {3,-15} | {4,-15}",
                                   "ID", "Name", "Age", "Salary", "Position");
-                Console.Write("   ");
-                Console.WriteLine(new string('-', 80));
+                Console.WriteLine("   " + new string('-', 80));
 
-                var employeesInDept = Employees.Where(e => e.GetDepartment().Name == department.Name).Distinct().ToList();
+                var employeesInDept = Employees
+                    .Where(e => e.GetDepartment() != null && e.GetDepartment().Name == department.Name)
+                    .Distinct()
+                    .ToList();
 
-                if (employeesInDept.Count(e => !e.IsEmployeeTerminate())==0)
+                if (employeesInDept.Count == 0)
                 {
-                    Console.Write("   ");
-                    Console.WriteLine(" No employees in this department.\n");
-
+                    Console.WriteLine("   No employees in this department.\n");
                 }
                 else
                 {
-                    foreach (var emp in employeesInDept)
+                    foreach (var employee in employeesInDept)
                     {
-                        if (emp.IsEmployeeTerminate() == false)
+                        if (!employee.IsEmployeeTerminate())
                         {
-                            Console.Write("   ");
-                            Console.WriteLine(" {0,-10} | {1,-20} | {2,-10} | {3,-10:C} | {4,-10}",
-                   emp.GetId(), emp.GetName(), emp.GetAge(), emp.GetSalary(),
-                   emp.GetPositionLevel());
-                        }
+                            string headIndicator = (department.DepartmentHead != null && department.DepartmentHead.GetId() == employee.GetId())
+                                ? " (Head)" : "";
 
+                            Console.Write("   ");
+                            Console.WriteLine(" {0,-10} | {1,-20} | {2,-10} | {3,-15:C} | {4,-15}{5}",
+                                             employee.GetId(), employee.GetName(), employee.GetAge(),
+                                             employee.GetSalary(), employee.GetPositionLevel(), headIndicator);
+                        }
                     }
                     Console.WriteLine("\n");
-
                 }
             }
-            return;
+            Console.ForegroundColor = ConsoleColor.Black;
         }
 
-        private static void PrintAllEmployees()
+        public static void PrintAllEmployees()
         {
             Console.WriteLine("\n");
             Console.ForegroundColor = ConsoleColor.Black;
@@ -220,40 +220,41 @@ namespace EmployeeManagementSystem
             }
         }
 
-        private static void PrintTopEmployees()
-        {
-            Console.WriteLine("\n");
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("                    *TOP EMPLOYEES*            ");
-            Console.Write("   ");
-            Console.WriteLine(new string('-', 100));
-            Console.Write("   ");
-            Console.WriteLine(" {0,-10} | {1,-20} | {2,-10} | {3,-10} | {4,-10} | {5,-10} | {6,-10}",
-                              "ID", "Name", "Age", "Salary", "Position", "Department", "Performance");
-            Console.Write("   ");
-            Console.WriteLine(new string('-', 100));
+        //private static void PrintTopEmployees()
+        //{
+        //    Console.WriteLine("\n");
+        //    Console.ForegroundColor = ConsoleColor.Green;
+        //    Console.WriteLine("                    *TOP EMPLOYEES*            ");
+        //    Console.Write("   ");
+        //    Console.WriteLine(new string('-', 100));
+        //    Console.Write("   ");
+        //    Console.WriteLine(" {0,-10} | {1,-20} | {2,-10} | {3,-10} | {4,-10} | {5,-10} | {6,-10}",
+        //                      "ID", "Name", "Age", "Salary", "Position", "Department", "Performance");
+        //    Console.Write("   ");
+        //    Console.WriteLine(new string('-', 100));
 
-            foreach (var employee in Employees.Distinct())
-            {
-                if (employee.IsEmployeeTerminate() == false)
-                {
-                    if (employee.GetCurrentRating() > Rating.Average)
-                    {
-                        Console.Write("   ");
-                        Console.WriteLine(" {0,-10} | {1,-20} | {2,-10} | {3,-10:C} | {4,-10} | {5,-10} | {6,-10}",
-                                  employee.GetId(), employee.GetName(), employee.GetAge(),
-                                  employee.GetSalary(), employee.GetPositionLevel(),
-                                  employee.GetDepartment().Name, employee.GetCurrentRating());
-                        return;
-                    }
+        //    foreach (var employee in Employees.Distinct())
+        //    {
+        //        if (employee.IsEmployeeTerminate() == false)
+        //        {
+        //            if (employee.GetCurrentRating() > Rating.Average)
+        //            {
+        //                Console.Write("   ");
+        //                Console.WriteLine(" {0,-10} | {1,-20} | {2,-10} | {3,-10:C} | {4,-10} | {5,-10} | {6,-10}",
+        //                          employee.GetId(), employee.GetName(), employee.GetAge(),
+        //                          employee.GetSalary(), employee.GetPositionLevel(),
+        //                          employee.GetDepartment().Name, employee.GetCurrentRating());
+        //                return;
+        //            }
 
-                    Console.WriteLine("No Employee has been in Top!");
-                    return;
+        //            Console.WriteLine("No Employee has been in Top!");
+        //            return;
 
-                }
-            }
-        }
-        private static void PrintTerminatedEmployees()
+        //        }
+        // Console.ForegroundColor = ConsoleColor.Black;
+        //    }
+        //}
+        public static void PrintTerminatedEmployees()
         {
             Console.WriteLine("\n");
             Console.ForegroundColor = ConsoleColor.DarkRed;
@@ -261,27 +262,34 @@ namespace EmployeeManagementSystem
             Console.Write("   ");
             Console.WriteLine(new string('-', 100));
             Console.Write("   ");
-            Console.WriteLine(" {0,-10} | {1,-20} | {2,-10} | {3,-10} | {4,-10} | {5,-10}",
+            Console.WriteLine(" {0,-10} | {1,-20} | {2,-10} | {3,-15} | {4,-15} | {5,-15}",
                               "ID", "Name", "Age", "Salary", "Position", "Department");
             Console.Write("   ");
             Console.WriteLine(new string('-', 100));
 
+            bool foundTerminated = false;
+
             foreach (var employee in Employees.Distinct())
             {
-                if (employee.IsEmployeeTerminate() == true)
+                if (employee.IsEmployeeTerminate())
                 {
+                    string departmentName = employee.GetDepartment() != null ? employee.GetDepartment().Name : "No Department";
                     Console.Write("   ");
-                    Console.WriteLine(" {0,-10} | {1,-20} | {2,-10} | {3,-10:C} | {4,-10} | {5,-10}",
-                                  employee.GetId(), employee.GetName(), employee.GetAge(),
-                                  employee.GetSalary(), employee.GetPositionLevel(),
-                                  employee.GetDepartment().Name);
-                    return;
+                    Console.WriteLine(" {0,-10} | {1,-20} | {2,-10} | {3,-15:C} | {4,-15} | {5,-15}",
+                                      employee.GetId(), employee.GetName(), employee.GetAge(),
+                                      employee.GetSalary(), employee.GetPositionLevel(), departmentName);
+                    foundTerminated = true;
                 }
-                Console.Write("   ");
-                Console.WriteLine("Thers is no Terminated Employees!");
-                return;
-
             }
+
+            if (!foundTerminated)
+            {
+                Console.Write("   ");
+                Console.WriteLine("There are no Terminated Employees!");
+            }
+
+        Console.ForegroundColor = ConsoleColor.Black;
         }
+
     }
 }
