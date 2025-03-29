@@ -18,19 +18,20 @@ namespace EmployeeManagementSystem.Menus
                 Console.Write("\n");
 
                 Console.WriteLine("   1. Add Employee");
-                Console.WriteLine("   2. Print All Employees");
-                Console.WriteLine("   3. Promote Employee");
-                Console.WriteLine("   4. Transfer Employee To Different Department");
+                Console.WriteLine("   2. Print All Employees"); 
+                Console.WriteLine("   3. Add Performance Rating");
+                Console.WriteLine("   4. Promote Employee");
+                Console.WriteLine("   5. Transfer Employee To Different Department");
+                Console.ForegroundColor = ConsoleColor.Black;
+                Console.WriteLine("   6. Reset All Performance");
                 Console.ForegroundColor = ConsoleColor.DarkGreen;
-                Console.WriteLine("   5. Print Top Employees");
+                Console.WriteLine("   7. Print Top Employees");
                 Console.ForegroundColor = ConsoleColor.DarkRed;
-                Console.WriteLine("   6. Terminate Employee");
+                Console.WriteLine("   8. Terminate Employee");
                 Console.ForegroundColor = ConsoleColor.Black;
-                Console.WriteLine("   7. Print Terminated Employees");
+                Console.WriteLine("   9. Print Terminated Employees");
+                Console.ForegroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.DarkRed;
-                Console.WriteLine("   8. Add Performance Rating");
-                Console.WriteLine("   9. Get Current Rating");
-                Console.ForegroundColor = ConsoleColor.Black;
                 Console.WriteLine("   10. Back to Main Menu");
                 Console.ForegroundColor = ConsoleColor.Black;
                 Console.Write("\n   Enter your choice: ");
@@ -46,29 +47,29 @@ namespace EmployeeManagementSystem.Menus
                         Console.ReadKey();
                         break;
                     case "3":
-                        EmployeeOperations.PromoteEmployee();
+                        EmployeeOperations.AddPerformanceRating();
                         break;
                     case "4":
-                        EmployeeOperations.TransferEmployeeFromDepartment();
+                        EmployeeOperations.PromoteEmployee();
                         break;
                     case "5":
-                        Company.GenerateReport();
+                        EmployeeOperations.TransferEmployeeFromDepartment();
                         break;
                     case "6":
-                        EmployeeOperations.TerminateEmployee();
+                        EmployeeOperations.ResetPerformanceReviews();
                         break;
                     case "7":
+                        Company.PrintTopEmployees();
+                        break;
+                    case "8":
+                        EmployeeOperations.TerminateEmployee();
+                        break;
+                    case "9":
                         Console.Write("\n");
                         Company.PrintTerminatedEmployees();
                         Console.ReadKey();
                         break;
-                    case "8":
-                        EmployeeOperations.AddPerformanceRating();
-                        break;
-                    case "9":
-                        EmployeeOperations.GetCurrentRating();
-                        Console.ReadKey(); 
-                        break;
+                   
                     case "10":
                         return;
                     default:

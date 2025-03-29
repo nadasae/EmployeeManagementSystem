@@ -85,24 +85,30 @@ namespace EmployeeManagementSystem
             // Calculate Average rate
             if (PerformanceReviews.ContainsKey(employee))
             {
-                var AverageRate = PerformanceReviews[employee].Average(r => (int)r.rating);
-                Rating roundedAverage = (Rating)Math.Round(AverageRate);
-
-                switch (roundedAverage)
+                if (PerformanceReviews[employee].Count == 4)
                 {
-                    case Rating.Poor:
-                        Console.WriteLine($"   Employee does not qualify for a promotion.");
-                        break;
-                    case Rating.Average:
-                        Console.WriteLine($"   Employee needs to improve performance for promotion.");
-                        break;
-                    case Rating.Good:
-                    case Rating.Excellent:
-                        {
-                            employee.Promote();
-                            Console.WriteLine($"   Employee is Promoted to {employee.GetPositionLevel().ToString()}");
-                        }
-                        break;
+                    var AverageRate = PerformanceReviews[employee].Average(r => (int)r.rating);
+                    Rating roundedAverage = (Rating)Math.Round(AverageRate);
+
+                    switch (roundedAverage)
+                    {
+                        case Rating.Poor:
+                            Console.WriteLine($"   Employee does not qualify for a promotion.");
+                            break;
+                        case Rating.Average:
+                            Console.WriteLine($"   Employee needs to improve performance for promotion.");
+                            break;
+                        case Rating.Good:
+                        case Rating.Excellent:
+                            {
+                                employee.Promote();
+                                Console.WriteLine($"   Employee is Promoted to {employee.GetPositionLevel().ToString()}");
+                            }
+                            break;
+                    }
+                }
+                else {
+                    Console.WriteLine($"   No performance reviews found for {employee.GetName()}. Cannot promote.");
                 }
             }
         }
@@ -211,20 +217,22 @@ namespace EmployeeManagementSystem
             Console.Write("   ");
             Console.WriteLine(new string('-', 100));
             Console.Write("   ");
-            Console.WriteLine(" {0,-10} | {1,-20} | {2,-10} | {3,-10} | {4,-10} | {5,-10}",
-                              "ID", "Name", "Age", "Salary", "Position", "Department");
+            Console.WriteLine(" {0,-10} | {1,-20} | {2,-10} | {3,-10} | {4,-10} | {5,-10} | {6,-10}",
+                              "ID", "Name", "Age", "Salary", "Position", "Department","Performance ");
             Console.Write("   ");
             Console.WriteLine(new string('-', 100));
 
             foreach (var employee in Employees.Distinct())
             {
-                if (employee.IsEmployeeTerminate() == false)
+                if (!employee.IsEmployeeTerminate())
                 {
+                    string departmentName = employee.GetDepartment() != null ? employee.GetDepartment().Name : "No Department";
+
                     Console.Write("   ");
-                    Console.WriteLine(" {0,-10} | {1,-20} | {2,-10} | {3,-10:C} | {4,-10} | {5,-10}",
-                                  employee.GetId(), employee.GetName(), employee.GetAge(),
-                                  employee.GetSalary(), employee.GetPositionLevel(),
-                                  employee.GetDepartment().Name);
+                    Console.WriteLine(" {0,-10} | {1,-20} | {2,-10} | {3,-10:C} | {4,-10} | {5,-10} | {6,-10}",
+                              employee.GetId(), employee.GetName(), employee.GetAge(),
+                              employee.GetSalary(), employee.GetPositionLevel(),
+                              departmentName, employee.GetCurrentRating());
                 }
             }
         }

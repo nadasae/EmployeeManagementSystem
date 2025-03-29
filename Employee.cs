@@ -20,8 +20,8 @@ namespace EmployeeManagementSystem
         private static int counter = 0;
         private PositionLevel PositionLevel;
         private bool TerminatedStatus;
-        public Dictionary<int, List<PerformanceReview>> PerformanceReviews
-        { get; private set; } = new Dictionary<int, List<PerformanceReview>>();//
+        //public Dictionary<int, List<PerformanceReview>> PerformanceReviews
+        //{ get; private set; } = new Dictionary<int, List<PerformanceReview>>();//
         private Rating rating;
 
         public Employee()
@@ -39,7 +39,7 @@ namespace EmployeeManagementSystem
             EmploymentDate = DateTime.Now;
             TerminatedStatus = false;
             rating = Rating.NotRated;
-            PerformanceReviews[this.GetId()] = new List<PerformanceReview>(); //
+           // PerformanceReviews[this.GetId()] = new List<PerformanceReview>(); //
         }
         public void AddDepartmentHead(int EmployeeId,string Name)
         {
@@ -70,6 +70,11 @@ namespace EmployeeManagementSystem
 
         public void AddPerformanceReview(Rating rating)
         {
+            if (Company.PerformanceReviews.Count == 4)
+            {
+                Console.WriteLine("This Employee Can't  be more rated this year");
+                return;
+            }
 
             #region Trash
             //var employee = Company.Employees.FirstOrDefault(e => e.GetId() == employeeId);
@@ -93,6 +98,17 @@ namespace EmployeeManagementSystem
 
             return Company.Employees.FirstOrDefault(employee => employee.GetId() == id);
 
+        }
+        public  void ResetPerformanceReviews()
+        {
+            foreach (var employee in Company.Employees.Where(e => !e.TerminatedStatus)) 
+            {
+                if (Company.PerformanceReviews.ContainsKey(employee) && Company.PerformanceReviews[employee].Count == 4)
+                {
+                    Company.PerformanceReviews[employee] = new List<PerformanceReview>(4);
+                    Console.WriteLine($"Reset performance reviews for employee {employee.Id}. All Rating were full. Old data removed.");
+                }
+            }
         }
         public int GetId()
         {

@@ -253,6 +253,44 @@ namespace EmployeeManagementSystem.Operations
                 Console.WriteLine($"   Error: {ex.Message}");
             }
         }
+        public static void ResetPerformanceReviews()
+        {
+            try
+            {
+                // Prompt for Employee ID
+                Console.Write("   Enter Employee ID (or type 'CANCEL' to stop): ");
+                string inputId = Console.ReadLine();
+                if (CompanyOperations.CheckForCancel(inputId)) return;
+
+                if (!int.TryParse(inputId, out int id))
+                {
+                    Console.Write("\n");
+                    Console.WriteLine("   Invalid ID! Please enter a valid number.");
+                    return;
+                }
+
+                // Check if employee exists
+                Employee employee = Company.GetEmployeeById(id);
+                if (employee == null)
+                {
+                    Console.Write("\n");
+                    Console.WriteLine("   Employee not found!");
+                    return;
+                }
+
+                // Reset the performance reviews
+                employee.ResetPerformanceReviews();
+                Console.Write("\n");
+                Console.WriteLine($"   Performance reviews for employee {employee.GetId()} have been reset successfully!");
+                Console.Beep();
+                Console.Write("\n");
+            }
+            catch (Exception ex)
+            {
+                Console.Write("\n");
+                Console.WriteLine($"   Error: {ex.Message}");
+            }
+        }
 
         public static void GetCurrentRating()
         {
