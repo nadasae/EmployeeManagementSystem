@@ -56,23 +56,6 @@ namespace EmployeeManagementSystem.Operations
             }
         }
 
-        //public static void PromoteEmployee()
-        //{
-        //    Console.Write("   Enter Employee Id (or type 'CANCEL' to stop): ");
-        //    string input = Console.ReadLine();
-
-        //    if (CompanyOperations.CheckForCancel(input)) return;
-
-        //    if (int.TryParse(input, out int Id))
-        //    {
-        //        Company.Promote(Id);
-        //    }
-        //    else
-        //    {
-        //        Console.Write("\n");
-        //        Console.WriteLine("   Invalid number!");
-        //    }
-        //}
         public static void PromoteEmployee()
         {
             Console.Write("   Enter Employee Id (or type 'CANCEL' to stop): ");
@@ -107,7 +90,6 @@ namespace EmployeeManagementSystem.Operations
                 Console.WriteLine("   Invalid number!");
             }
         }
-
 
         public static void TerminateEmployee()
         {
@@ -281,7 +263,7 @@ namespace EmployeeManagementSystem.Operations
                 // Reset the performance reviews
                 employee.ResetPerformanceReviews();
                 Console.Write("\n");
-                Console.WriteLine($"   Performance reviews for employee {employee.GetId()} have been reset successfully!");
+                Console.WriteLine($"   Performance reviews for employee {employee.GetName()} have been reset successfully!");
                 Console.Beep();
                 Console.Write("\n");
             }

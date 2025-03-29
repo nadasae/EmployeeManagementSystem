@@ -59,7 +59,9 @@ namespace EmployeeManagementSystem.Menus
                         EmployeeOperations.ResetPerformanceReviews();
                         break;
                     case "7":
+                        Console.Write("\n");
                         Company.PrintTopEmployees();
+                        Console.ReadKey();
                         break;
                     case "8":
                         EmployeeOperations.TerminateEmployee();

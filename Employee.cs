@@ -106,7 +106,6 @@ namespace EmployeeManagementSystem
                 if (Company.PerformanceReviews.ContainsKey(employee) && Company.PerformanceReviews[employee].Count == 4)
                 {
                     Company.PerformanceReviews[employee] = new List<PerformanceReview>(4);
-                    Console.WriteLine($"Reset performance reviews for employee {employee.Id}. All Rating were full. Old data removed.");
                 }
             }
         }
@@ -197,7 +196,7 @@ namespace EmployeeManagementSystem
 
             if (department == null)
             {
-                Console.WriteLine("   Department already exists!");
+                Console.WriteLine("   Department Doesn't exists!");
                 return;
             }
             SetDepartment(department);

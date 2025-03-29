@@ -31,7 +31,7 @@ namespace EmployeeManagementSystem
            
             while (true)
             {
-                Console.Write($"{message} (Between {min} and {max}): ");
+                Console.Write($"{message}");
                 string input = Console.ReadLine().Trim();
                 if (CompanyOperations.CheckForCancel(input)) return -1;
                 if (int.TryParse(input, out value))
@@ -53,7 +53,7 @@ namespace EmployeeManagementSystem
             decimal value;
             while (true)
             {
-                Console.Write($"{message} (Between {min} and {max}): ");
+                Console.Write($"{message}");
                 string input = Console.ReadLine().Trim();
                 if (CompanyOperations.CheckForCancel(input)) return -1;
                 if (decimal.TryParse(input, out value))

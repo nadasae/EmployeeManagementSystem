@@ -15,11 +15,12 @@ namespace EmployeeManagementSystem
         }
         public enum Rating
         {
+            NotRated,
             Poor,
             Average,
             Good,
-            Excellent,
-            NotRated
+            Excellent
+            
         }
 
     }

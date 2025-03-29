@@ -16,8 +16,8 @@ namespace EmployeeManagementSystem.Menus
                 Console.WriteLine("                                             ║  EMPLOYEE MANAGEMENT SYSTEM  ║");
                 Console.WriteLine("                                             ╚══════════════════════════════╝\n");
                 Console.Write("\n");
-                Console.WriteLine("   1. Department Operations");
-                Console.WriteLine("   2. Employee Operations");
+                Console.WriteLine("   1. Department Section");
+                Console.WriteLine("   2. Employee Section");
                 Console.WriteLine("   3. Generate Report");
                 Console.ForegroundColor = ConsoleColor.DarkRed;
                 Console.WriteLine("   4. Exit");
