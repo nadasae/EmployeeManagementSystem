@@ -103,8 +103,6 @@ namespace EmployeeManagementSystem
             }
         }
 
-
-
         public static void GenerateReport()
         {
 
