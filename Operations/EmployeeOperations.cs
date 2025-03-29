@@ -13,9 +13,13 @@ namespace EmployeeManagementSystem.Operations
                 if (CompanyOperations.CheckForCancel(name)) return;
 
                 int age = ReadFromUser.ReadInteger("   Enter Employee Age (or type 'CANCEL' to stop): ", 20, 60);
+                if (CompanyOperations.CheckForCancel(age.ToString()))
+                { return; }
+               
                 if (age == -1) return; 
 
                 decimal salary = ReadFromUser.ReadRealNumber("   Enter Employee Salary (or type 'CANCEL' to stop): ", 5000, 1000000);
+                if (CompanyOperations.CheckForCancel(salary.ToString())) return;
                 if (salary == -1) return;
 
                 Department department = null;
@@ -32,6 +36,7 @@ namespace EmployeeManagementSystem.Operations
                 }
 
                 int positionInput = ReadFromUser.ReadInteger("   Choose The Position Level: \n   1- fresh, 2- junior, 3- senior, 4- teamleader, 5- head\n   Enter the number (or type 'CANCEL' to stop): ", 1, 5);
+                if (CompanyOperations.CheckForCancel(positionInput.ToString())) return;
                 if (positionInput == -1) return;
 
                 PositionLevel positionLevel = (PositionLevel)positionInput;
@@ -50,15 +55,49 @@ namespace EmployeeManagementSystem.Operations
             }
         }
 
+        //public static void PromoteEmployee()
+        //{
+        //    Console.Write("   Enter Employee Id (or type 'CANCEL' to stop): ");
+        //    string input = Console.ReadLine();
+
+        //    if (CompanyOperations.CheckForCancel(input)) return;
+
+        //    if (int.TryParse(input, out int Id))
+        //    {
+        //        Company.Promote(Id);
+        //    }
+        //    else
+        //    {
+        //        Console.Write("\n");
+        //        Console.WriteLine("   Invalid number!");
+        //    }
+        //}
         public static void PromoteEmployee()
         {
             Console.Write("   Enter Employee Id (or type 'CANCEL' to stop): ");
             string input = Console.ReadLine();
 
-            if (CompanyOperations.CheckForCancel(input)) return;
+            if (string.IsNullOrWhiteSpace(input) || CompanyOperations.CheckForCancel(input))
+                return;
 
             if (int.TryParse(input, out int Id))
             {
+                Employee employee = Company.GetEmployeeById(Id);
+                if (employee == null)
+                {
+                    Console.Write("\n");
+                    Console.WriteLine("   Employee not found!");
+                    return;
+                }
+
+                if (employee.IsEmployeeTerminate())
+                {
+                    Console.Write("\n");
+                    Console.WriteLine("   Cannot promote a terminated employee!");
+                    return;
+                }
+
+                // Call the promote function (doesn't return a value)
                 Company.Promote(Id);
             }
             else
@@ -67,6 +106,7 @@ namespace EmployeeManagementSystem.Operations
                 Console.WriteLine("   Invalid number!");
             }
         }
+
 
         public static void TerminateEmployee()
         {

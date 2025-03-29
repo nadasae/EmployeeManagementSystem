@@ -7,16 +7,11 @@ namespace EmployeeManagementSystem
 
     internal class Program
     {
-
-
-
         static void Main()
         {
             MainMenu.Show();
 
         }
-
-
 
     }
 

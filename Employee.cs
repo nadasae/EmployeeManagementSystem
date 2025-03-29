@@ -20,8 +20,8 @@ namespace EmployeeManagementSystem
         private static int counter = 0;
         private PositionLevel PositionLevel;
         private bool TerminatedStatus;
-        public Dictionary<Employee, List<PerformanceReview>> PerformanceReviews
-        { get; private set; } = new Dictionary<Employee, List<PerformanceReview>>();
+        public Dictionary<int, List<PerformanceReview>> PerformanceReviews
+        { get; private set; } = new Dictionary<int, List<PerformanceReview>>();//
         private Rating rating;
 
         public Employee()
@@ -39,6 +39,7 @@ namespace EmployeeManagementSystem
             EmploymentDate = DateTime.Now;
             TerminatedStatus = false;
             rating = Rating.NotRated;
+            PerformanceReviews[this.GetId()] = new List<PerformanceReview>(); //
         }
         public void AddDepartmentHead(int EmployeeId,string Name)
         {
@@ -133,13 +134,13 @@ namespace EmployeeManagementSystem
         {
             return PositionLevel;
         }
-        public Rating GetCurrentRating()
+        public Rating GetCurrentRating()//
         {
-            if (PerformanceReviews[this].Count == 0)
+            if (!PerformanceReviews.ContainsKey(this.Id) || PerformanceReviews[this.Id].Count == 0)
             {
                 return Rating.NotRated;
             }
-           return PerformanceReviews[this][PerformanceReviews[this].Count - 1].rating;
+            return PerformanceReviews[this.Id][PerformanceReviews[this.Id].Count - 1].rating;
         }
         public void GetEmploymentDate()
         {

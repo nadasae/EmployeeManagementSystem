@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
+using EmployeeManagementSystem.Operations;
 
 namespace EmployeeManagementSystem
 {
@@ -26,11 +28,12 @@ namespace EmployeeManagementSystem
         public static int ReadInteger(string message, int min, int max)
         {
             int value;
+           
             while (true)
             {
                 Console.Write($"{message} (Between {min} and {max}): ");
                 string input = Console.ReadLine().Trim();
-
+                if (CompanyOperations.CheckForCancel(input)) return -1;
                 if (int.TryParse(input, out value))
                 {
                     if (value >= min && value <= max)
@@ -52,7 +55,7 @@ namespace EmployeeManagementSystem
             {
                 Console.Write($"{message} (Between {min} and {max}): ");
                 string input = Console.ReadLine().Trim();
-
+                if (CompanyOperations.CheckForCancel(input)) return -1;
                 if (decimal.TryParse(input, out value))
                 {
                     if (value >= min && value <= max)

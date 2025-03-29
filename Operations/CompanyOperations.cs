@@ -13,7 +13,7 @@ namespace EmployeeManagementSystem.Operations
         }
         public static bool CheckForCancel(string input)
         {
-            if (input.Equals("CANCEL", StringComparison.OrdinalIgnoreCase))
+            if (input.ToUpper().Equals("CANCEL", StringComparison.OrdinalIgnoreCase))
             {
                 Console.Write("\n");
                 Console.WriteLine("   Operation canceled.");

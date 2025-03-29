@@ -61,7 +61,6 @@ namespace EmployeeManagementSystem
 
         public static void Promote(int id)
         {
-
             Employee employee = GetEmployeeById(id);
             if (employee == null)
             {
@@ -74,29 +73,37 @@ namespace EmployeeManagementSystem
                 Console.WriteLine("   Employee cannot be promoted further than Head.");
                 return;
             }
-            // Calculate Average rate
-            if (PerformanceReviews[employee].Count != 0)
+
+            // ✅ Check if the employee has performance reviews before accessing the dictionary
+            if (!PerformanceReviews.ContainsKey(employee) || PerformanceReviews[employee].Count == 0)
             {
-                var AverageRate = PerformanceReviews[employee].Average(r => (int)r.rating);
-                Rating roundedAverage = (Rating)Math.Round(AverageRate);
-                switch (roundedAverage)
-                {
-                    case Rating.Poor:
-                        Console.WriteLine($"   Employee does not qualify for a promotion.");
-                        break;
-                    case Rating.Average:
-                        Console.WriteLine($"   Employee needs to improve performance for promotion.");
-                        break;
-                    case Rating.Good:
-                    case Rating.Excellent:
-                        {
-                            employee.Promote();
-                            Console.WriteLine($"   Employee is Promoted to {employee.GetPositionLevel().ToString()}");
-                        }
-                        break;
-                }
+                Console.WriteLine($"   No performance reviews found for {employee.GetName()}. Cannot promote.");
+                return;
+            }
+
+            // Calculate Average rate
+            var AverageRate = PerformanceReviews[employee].Average(r => (int)r.rating);
+            Rating roundedAverage = (Rating)Math.Round(AverageRate);
+
+            switch (roundedAverage)
+            {
+                case Rating.Poor:
+                    Console.WriteLine($"   Employee does not qualify for a promotion.");
+                    break;
+                case Rating.Average:
+                    Console.WriteLine($"   Employee needs to improve performance for promotion.");
+                    break;
+                case Rating.Good:
+                case Rating.Excellent:
+                    {
+                        employee.Promote();
+                        Console.WriteLine($"   Employee is Promoted to {employee.GetPositionLevel().ToString()}");
+                    }
+                    break;
             }
         }
+
+
 
         public static void GenerateReport()
         {
@@ -112,7 +119,7 @@ namespace EmployeeManagementSystem
             PrintDepartments();
             PrintEmployeesByDepartment();
             PrintAllEmployees();
-            //PrintTopEmployees();
+            PrintTopEmployees();
             PrintTerminatedEmployees();
 
             Console.ForegroundColor = ConsoleColor.Black;
@@ -251,9 +258,49 @@ namespace EmployeeManagementSystem
         //            return;
 
         //        }
-        // Console.ForegroundColor = ConsoleColor.Black;
+        //        Console.ForegroundColor = ConsoleColor.Black;
         //    }
         //}
+        public static void PrintTopEmployees()
+        {
+            Console.WriteLine("\n");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("                    *TOP EMPLOYEES*            ");
+            Console.Write("   ");
+            Console.WriteLine(new string('-', 100));
+            Console.Write("   ");
+            Console.WriteLine(" {0,-10} | {1,-20} | {2,-10} | {3,-10} | {4,-10} | {5,-10} | {6,-10}",
+                              "ID", "Name", "Age", "Salary", "Position", "Department", "Performance");
+            Console.Write("   ");
+            Console.WriteLine(new string('-', 100));
+
+            bool topEmployeeFound = false; // Flag to check if any top employee exists
+
+            foreach (var employee in Employees.Distinct())
+            {
+                if (!employee.IsEmployeeTerminate() && employee.GetCurrentRating() > Rating.Average)
+                {
+                    string departmentName = employee.GetDepartment() != null ? employee.GetDepartment().Name : "No Department";
+
+                    Console.Write("   ");
+                    Console.WriteLine(" {0,-10} | {1,-20} | {2,-10} | {3,-10:C} | {4,-10} | {5,-10} | {6,-10}",
+                              employee.GetId(), employee.GetName(), employee.GetAge(),
+                              employee.GetSalary(), employee.GetPositionLevel(),
+                              departmentName, employee.GetCurrentRating());
+
+                    topEmployeeFound = true; // At least one top employee found
+                }
+            }
+
+            // Print message only if no top employees were found
+            if (!topEmployeeFound)
+            {
+                Console.WriteLine("\n   No Employee has been in Top!");
+            }
+
+            
+        }
+
         public static void PrintTerminatedEmployees()
         {
             Console.WriteLine("\n");
@@ -289,6 +336,7 @@ namespace EmployeeManagementSystem
             }
 
         Console.ForegroundColor = ConsoleColor.Black;
+      
         }
 
     }
