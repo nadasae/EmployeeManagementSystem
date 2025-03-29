@@ -68,17 +68,25 @@ namespace EmployeeManagementSystem
         }
 
 
-        public void AddPerformanceReview(int employeeId, Rating rating)
+        public void AddPerformanceReview(Rating rating)
         {
 
-            var employee = Company.Employees.FirstOrDefault(e => e.GetId() == employeeId);
-            if (employee == null) throw new Exception("Employee doesn't exist");
-            var review = new PerformanceReview(rating);
-            if (!Company.PerformanceReviews.ContainsKey(employee))
+            #region Trash
+            //var employee = Company.Employees.FirstOrDefault(e => e.GetId() == employeeId);
+            //if (employee == null) throw new Exception("Employee doesn't exist");
+            //var review = new PerformanceReview(rating);
+            ////if (!Company.PerformanceReviews.ContainsKey(this))
+            ////{
+            ////    Company.PerformanceReviews[this] = new List<PerformanceReview>();
+            ////}
+            //Company.PerformanceReviews[this] = new List<PerformanceReview>();
+            //this.PerformanceReviews[this].Add(review); 
+            #endregion 
+            if (!Company.PerformanceReviews.ContainsKey(this))
             {
-                Company.PerformanceReviews[employee] = new List<PerformanceReview>();
+                Company.PerformanceReviews[this] = new List<PerformanceReview>(4);
             }
-            Company.PerformanceReviews[employee].Add(review);
+            Company.PerformanceReviews[this].Add(new PerformanceReview(rating));
         }
         public Employee GetEmployeeById(int id)
         {
@@ -134,17 +142,19 @@ namespace EmployeeManagementSystem
         {
             return PositionLevel;
         }
-        public Rating GetCurrentRating()//
+        public Rating GetCurrentRating()
         {
-            if (!PerformanceReviews.ContainsKey(this.Id) || PerformanceReviews[this.Id].Count == 0)
+            if (!Company.PerformanceReviews.ContainsKey(this) || Company.PerformanceReviews[this].Count == 0)
             {
                 return Rating.NotRated;
             }
-            return PerformanceReviews[this.Id][PerformanceReviews[this.Id].Count - 1].rating;
+            return Company.PerformanceReviews[this].Last().rating;
         }
-        public void GetEmploymentDate()
+        public DateTime GetEmploymentDate()
         {
-            Console.WriteLine($"{EmploymentDate.ToShortDateString()}");
+            //Console.WriteLine($"{EmploymentDate.ToShortDateString()}");
+            return EmploymentDate;
+
         }
         public void SetEmployeeTerminate()
         {

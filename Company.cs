@@ -28,6 +28,7 @@ namespace EmployeeManagementSystem
                 Console.WriteLine("   This Employee with this ID already exists!");
                 return;
             }
+            PerformanceReviews[employee] = new List<PerformanceReview>(4);
             Employees.Add(employee);
             
         }
@@ -82,24 +83,27 @@ namespace EmployeeManagementSystem
             }
 
             // Calculate Average rate
-            var AverageRate = PerformanceReviews[employee].Average(r => (int)r.rating);
-            Rating roundedAverage = (Rating)Math.Round(AverageRate);
-
-            switch (roundedAverage)
+            if (PerformanceReviews.ContainsKey(employee))
             {
-                case Rating.Poor:
-                    Console.WriteLine($"   Employee does not qualify for a promotion.");
-                    break;
-                case Rating.Average:
-                    Console.WriteLine($"   Employee needs to improve performance for promotion.");
-                    break;
-                case Rating.Good:
-                case Rating.Excellent:
-                    {
-                        employee.Promote();
-                        Console.WriteLine($"   Employee is Promoted to {employee.GetPositionLevel().ToString()}");
-                    }
-                    break;
+                var AverageRate = PerformanceReviews[employee].Average(r => (int)r.rating);
+                Rating roundedAverage = (Rating)Math.Round(AverageRate);
+
+                switch (roundedAverage)
+                {
+                    case Rating.Poor:
+                        Console.WriteLine($"   Employee does not qualify for a promotion.");
+                        break;
+                    case Rating.Average:
+                        Console.WriteLine($"   Employee needs to improve performance for promotion.");
+                        break;
+                    case Rating.Good:
+                    case Rating.Excellent:
+                        {
+                            employee.Promote();
+                            Console.WriteLine($"   Employee is Promoted to {employee.GetPositionLevel().ToString()}");
+                        }
+                        break;
+                }
             }
         }
 

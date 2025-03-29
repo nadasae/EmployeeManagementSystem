@@ -1,5 +1,6 @@
 ﻿using EmployeeManagementSystem;
 using System;
+using static EmployeeManagementSystem.PerformanceReview;
 
 namespace EmployeeManagementSystem.Operations
 {
@@ -182,6 +183,114 @@ namespace EmployeeManagementSystem.Operations
                     Console.Write("\n");
                     Console.WriteLine("   Employee not found!");
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.Write("\n");
+                Console.WriteLine($"   Error: {ex.Message}");
+            }
+        }
+        public static void AddPerformanceRating()
+        {
+            try
+            {
+                // Prompt for Employee ID
+                Console.Write("   Enter Employee ID (or type 'CANCEL' to stop): ");
+                string inputId = Console.ReadLine();
+                if (CompanyOperations.CheckForCancel(inputId)) return;
+
+                if (!int.TryParse(inputId, out int id))
+                {
+                    Console.Write("\n");
+                    Console.WriteLine("   Invalid ID! Please enter a valid number.");
+                    return;
+                }
+
+                // Check if employee exists
+                Employee employee = Company.GetEmployeeById(id);
+                if (employee == null)
+                {
+                    Console.Write("\n");
+                    Console.WriteLine("   Employee not found!");
+                    return;
+                }
+
+                // Check if employee is terminated
+                if (employee.IsEmployeeTerminate())
+                {
+                    Console.Write("\n");
+                    Console.WriteLine("   Cannot add a performance rating for a terminated employee!");
+                    return;
+                }
+
+                // Check if the employee already has 4 ratings for the current year
+                if (Company.PerformanceReviews[employee].Count >= 4)
+                {
+                    Console.Write("\n");
+                    Console.WriteLine("   Employee already has 4 performance ratings for this year. Reset may be required.");
+                    return;
+                }
+
+                // Prompt for the performance rating
+                Console.WriteLine("   Choose the Performance Rating: ");
+                Console.WriteLine("   0- Poor, 1- Average, 2- Good, 3- Excellent");
+                int ratingInput = ReadFromUser.ReadInteger("   Enter the number (0-3, or type 'CANCEL' to stop): ", 0, 3);
+                if (CompanyOperations.CheckForCancel(ratingInput.ToString())) return;
+                if (ratingInput == -1) return;
+
+                Rating rating = (Rating)ratingInput;
+
+                // Add the performance rating
+                employee.AddPerformanceReview( rating);
+                Console.Write("\n");
+                Console.WriteLine("   Performance rating added successfully!");
+                Console.Beep();
+                Console.Write("\n");
+            }
+            catch (Exception ex)
+            {
+                Console.Write("\n");
+                Console.WriteLine($"   Error: {ex.Message}");
+            }
+        }
+
+        public static void GetCurrentRating()
+        {
+            try
+            {
+                // Prompt for Employee ID
+                Console.Write("   Enter Employee ID (or type 'CANCEL' to stop): ");
+                string inputId = Console.ReadLine();
+                if (CompanyOperations.CheckForCancel(inputId)) return;
+
+                if (!int.TryParse(inputId, out int id))
+                {
+                    Console.Write("\n");
+                    Console.WriteLine("   Invalid ID! Please enter a valid number.");
+                    return;
+                }
+
+                // Check if employee exists
+                Employee employee = Company.GetEmployeeById(id);
+                if (employee == null)
+                {
+                    Console.Write("\n");
+                    Console.WriteLine("   Employee not found!");
+                    return;
+                }
+
+                // Get the current rating
+                Rating currentRating = employee.GetCurrentRating();
+                Console.Write("\n");
+                if (currentRating == Rating.NotRated)
+                {
+                    Console.WriteLine("   Employee has no performance ratings yet.");
+                }
+                else
+                {
+                    Console.WriteLine($"   Current performance rating for employee {employee.GetId()}: {currentRating}");
+                }
+                Console.Write("\n");
             }
             catch (Exception ex)
             {

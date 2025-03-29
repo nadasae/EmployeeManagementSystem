@@ -28,7 +28,10 @@ namespace EmployeeManagementSystem.Menus
                 Console.ForegroundColor = ConsoleColor.Black;
                 Console.WriteLine("   7. Print Terminated Employees");
                 Console.ForegroundColor = ConsoleColor.DarkRed;
-                Console.WriteLine("   8. Back to Main Menu");
+                Console.WriteLine("   8. Add Performance Rating");
+                Console.WriteLine("   9. Get Current Rating");
+                Console.ForegroundColor = ConsoleColor.Black;
+                Console.WriteLine("   10. Back to Main Menu");
                 Console.ForegroundColor = ConsoleColor.Black;
                 Console.Write("\n   Enter your choice: ");
                 string choice = Console.ReadLine();
@@ -60,9 +63,16 @@ namespace EmployeeManagementSystem.Menus
                         Console.ReadKey();
                         break;
                     case "8":
+                        EmployeeOperations.AddPerformanceRating();
+                        break;
+                    case "9":
+                        EmployeeOperations.GetCurrentRating();
+                        Console.ReadKey(); 
+                        break;
+                    case "10":
                         return;
                     default:
-                        Console.WriteLine("   Invalid choice! Please Choose [1,2,3,4,5,6,7,8], Try again.");
+                        Console.WriteLine("   Invalid choice! Please Choose [1,2,3,4,5,6,7,8,9,10], Try again.");
                         break;
                 }
             }
