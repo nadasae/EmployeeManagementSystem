@@ -89,6 +89,7 @@ namespace EmployeeManagementSystem.Operations
                 Console.Write("\n");
                 Console.WriteLine("   Invalid number!");
             }
+
         }
 
         public static void TerminateEmployee()
@@ -157,8 +158,6 @@ namespace EmployeeManagementSystem.Operations
                 if (employee != null)
                 {
                     employee.TrasnferDepartment(department);
-                    Console.Write("\n");
-                    Console.WriteLine("   Employee Transferred successfully!");
                 }
                 else
                 {

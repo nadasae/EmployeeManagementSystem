@@ -22,17 +22,15 @@ namespace EmployeeManagementSystem.Menus
                 Console.WriteLine("   3. Add Performance Rating");
                 Console.WriteLine("   4. Promote Employee");
                 Console.WriteLine("   5. Transfer Employee To Different Department");
-                Console.ForegroundColor = ConsoleColor.Black;
-                Console.WriteLine("   6. Reset All Performance");
                 Console.ForegroundColor = ConsoleColor.DarkGreen;
-                Console.WriteLine("   7. Print Top Employees");
+                Console.WriteLine("   6. Print Top Employees");
                 Console.ForegroundColor = ConsoleColor.DarkRed;
-                Console.WriteLine("   8. Terminate Employee");
+                Console.WriteLine("   7. Terminate Employee");
                 Console.ForegroundColor = ConsoleColor.Black;
-                Console.WriteLine("   9. Print Terminated Employees");
+                Console.WriteLine("   8. Print Terminated Employees");
                 Console.ForegroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.DarkRed;
-                Console.WriteLine("   10. Back to Main Menu");
+                Console.WriteLine("   9. Back to Main Menu");
                 Console.ForegroundColor = ConsoleColor.Black;
                 Console.Write("\n   Enter your choice: ");
                 string choice = Console.ReadLine();
@@ -56,26 +54,23 @@ namespace EmployeeManagementSystem.Menus
                         EmployeeOperations.TransferEmployeeFromDepartment();
                         break;
                     case "6":
-                        EmployeeOperations.ResetPerformanceReviews();
-                        break;
-                    case "7":
                         Console.Write("\n");
                         Company.PrintTopEmployees();
                         Console.ReadKey();
                         break;
-                    case "8":
+                    case "7":
                         EmployeeOperations.TerminateEmployee();
                         break;
-                    case "9":
+                    case "8":
                         Console.Write("\n");
                         Company.PrintTerminatedEmployees();
                         Console.ReadKey();
                         break;
                    
-                    case "10":
+                    case "9":
                         return;
                     default:
-                        Console.WriteLine("   Invalid choice! Please Choose [1,2,3,4,5,6,7,8,9,10], Try again.");
+                        Console.WriteLine("   Invalid choice! Please Choose [1,2,3,4,5,6,7,8,9], Try again.");
                         break;
                 }
             }

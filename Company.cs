@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using EmployeeManagementSystem.Operations;
 using static EmployeeManagementSystem.PerformanceReview;
 
 namespace EmployeeManagementSystem
@@ -99,10 +100,17 @@ namespace EmployeeManagementSystem
                             Console.WriteLine($"   Employee needs to improve performance for promotion.");
                             break;
                         case Rating.Good:
+                            {
+                                employee.Promote();
+                                Console.WriteLine($"   Employee is Promoted to {employee.GetPositionLevel().ToString()}");
+                                employee.ResetPerformanceReviews();
+                            }
+                            break;
                         case Rating.Excellent:
                             {
                                 employee.Promote();
                                 Console.WriteLine($"   Employee is Promoted to {employee.GetPositionLevel().ToString()}");
+                                employee.ResetPerformanceReviews();
                             }
                             break;
                     }

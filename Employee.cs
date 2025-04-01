@@ -191,16 +191,24 @@ namespace EmployeeManagementSystem
         {
 
             if (this.GetDepartment().Name == NewDepartment)
-                throw new Exception("   You'r already in this department");
+            {
+                Console.WriteLine("   You'r already in this department");
+                return;
+            }
             var department = Company.Departments.FirstOrDefault(d => d.Name == NewDepartment);
 
             if (department == null)
             {
+                Console.Write("\n");
                 Console.WriteLine("   Department Doesn't exists!");
                 return;
             }
-            SetDepartment(department);
-
+            
+                SetDepartment(department);
+                Console.Write("\n");
+                Console.WriteLine("   Employee Transferred successfully!");
+            
+            
         }
     }
 }
